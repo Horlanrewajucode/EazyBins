@@ -3,19 +3,17 @@ import "dotenv/config";
 import express from "express";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import db from "./db";
+import db from "./db.js";
+import app from "./app.js";
 
 // Get current directory (__dirname equivalent in ESM)
 // incase we need it.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const app = express();
+
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 let server;
 
