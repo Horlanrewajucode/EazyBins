@@ -12,11 +12,16 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bcryptjs": "^3.0.2",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "ioredis": "^5.7.0",
+    "joi": "^18.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.17.1"
+    "mongoose": "^8.17.1",
+    "node-cache": "^5.1.2",
+    "nodemailer": "^7.0.5",
+    "otp-agent": "^3.3.1"
   },
   "devDependencies": {
     "jest": "^30.0.5",
