@@ -1,6 +1,6 @@
 //LoginPage.jsx
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 //import background from "../assets/file.svg";
