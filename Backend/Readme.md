@@ -74,19 +74,19 @@ In your React frontend, you'll use Axios to send HTTP requests to the backend AP
 ```js
 import axios from 'axios';
 
-const API_BASE = ''; //Coming after hosting
+const API_BASE = 'https://eazybinsbackend.onrender.com'; //Backend url
 
 // Sends user registration data to the backend
 export const signup = (formData) => {
-  return axios.post(`${API_BASE}/signup`, formData);
+  return axios.post(`${API_BASE}/api/auth/signup`, formData);
 };
 
 // Sends login credentials (email and password) to the backend
 export const login = (credentials) => {
-  return axios.post(`${API_BASE}/login`, credentials);
+  return axios.post(`${API_BASE}/api/auth/login`, credentials);
 };
 
 // Sends the OTP received by the user to verify their identity
 export const verifyOtp = (otpData) => {
-  return axios.post(`${API_BASE}/verify-otp`, otpData);
+  return axios.post(`${API_BASE}/api/auth/verify-otp`, otpData);
 };
