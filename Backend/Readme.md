@@ -30,13 +30,14 @@
 
 # How Authentication Works
 
+
 ## Signup Process
 
 1. **User Submits Details**  
-   Full name, username, email, phone number, password, and address are collected.
+   The frontend sends a POST request to `/signup` with fullName, username, email, phoneNumber, password, role, and address (including street, city, state, and country).
 
 2. **Password Hashing**  
-   Password is hashed using a Mongoose pre-save hook before saving to the database.
+   The backend hashes the password using a Mongoose pre-save hook before saving the user.
 
 3. **Send OTP for Verification**  
    An OTP is generated and emailed to the user for account verification.
@@ -44,24 +45,48 @@
 ## Login Process
 
 1. **User Provides Credentials**  
-   Email and password are submitted via the login endpoint.
+   The frontend sends a POST request to `/login` with email and password.
 
 2. **Validate Password**  
-   Password is compared using bcrypt. If valid, proceed to OTP step.
+   The backend compares the password using bcrypt. If valid, it proceeds to OTP generation.
 
 3. **Send OTP for 2FA**  
-   A new OTP is generated and sent to the user's email for second-factor authentication.
+   A new OTP is sent to the user's email for second-factor authentication.
 
 ## OTP Verification
 
 1. **User Submits OTP**  
-   OTP is sent to the verification endpoint.
+   The frontend sends a POST request to `/verify-otp` with email and OTP.
 
 2. **Validate OTP**  
-   If the OTP is correct and not expired, a JWT token is issued for authenticated access.
+   If the OTP is correct and not expired, the backend issues a JWT token.
 
 ## Token Usage
 
-- JWT token is used to access protected routes.
-- Token includes user ID and expires after a set duration.
+- The JWT token is used to access protected routes.
+- It includes the user ID and expires after a set duration.
+- Store the token securely on the frontend (e.g., in localStorage or React context).
 
+## Axios Example and Usage
+
+In your React frontend, you'll use Axios to send HTTP requests to the backend API. Below are example functions for signup, login, and OTP verification. These functions can be placed in a separate `api.js` file or directly inside your authentication service.
+
+```js
+import axios from 'axios';
+
+const API_BASE = 'https://eazybinsbackend.onrender.com'; //Backend url
+
+// Sends user registration data to the backend
+export const signup = (formData) => {
+  return axios.post(`${API_BASE}/api/auth/signup`, formData);
+};
+
+// Sends login credentials (email and password) to the backend
+export const login = (credentials) => {
+  return axios.post(`${API_BASE}/api/auth/login`, credentials);
+};
+
+// Sends the OTP received by the user to verify their identity
+export const verifyOtp = (otpData) => {
+  return axios.post(`${API_BASE}/api/auth/verify-otp`, otpData);
+};
