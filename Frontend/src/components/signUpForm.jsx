@@ -1,3 +1,5 @@
+// signUpForm component
+
 import { useState } from "react";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { motion } from "framer-motion";

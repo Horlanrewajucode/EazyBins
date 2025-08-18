@@ -1,4 +1,5 @@
-// src/pages/LoginPage.jsx
+// SignUpPage.jsx
+
 import { motion } from "framer-motion";
 import Background from "../components/background";
 import SignUpForm from "../components/signUpForm";
