@@ -1,10 +1,10 @@
-//LoginPage.jsx
-
+// src/pages/LoginPage.jsx
 import { motion } from "framer-motion";
 import Background from "../components/background";
-import LoginForm from "../components/loginForm";
+import SignUpForm from "../components/signUpForm";
 
-export default function LoginPage() {
+export default function SignUpPage() {
+  
   return (
     <div className="flex flex-col md:flex-row h-screen bg-white md:overflow-hidden overflow-auto shadow-[4px_0_5px_-4px_rgba(0,0,0,0.15)] pb-13">
       {/* Left panel with animation */}
@@ -18,7 +18,7 @@ export default function LoginPage() {
       </motion.div>
 
       {/* Right panel */}
-      <LoginForm />
+      <SignUpForm />
     </div>
   );
 }
