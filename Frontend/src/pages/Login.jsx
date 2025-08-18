@@ -18,7 +18,6 @@ export default function LoginPage() {
       </motion.div>
 
       {/* Right panel */}
-
       <LoginForm />
     </div>
   );
