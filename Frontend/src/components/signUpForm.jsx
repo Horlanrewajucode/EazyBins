@@ -162,6 +162,7 @@ export default function SignupForm() {
               id="firstName"
               value={formData.firstName}
               onChange={handleChange}
+              placeholder="Enter your first name"
               className={`block w-full rounded-md border px-4 py-2 text-gray-900 sm:text-sm 
       ${
         errors.firstName
@@ -197,6 +198,7 @@ export default function SignupForm() {
               id="lastName"
               value={formData.lastName}
               onChange={handleChange}
+              placeholder="Enter your last name"
               className={`block w-full rounded-md border px-4 py-2 text-gray-900 sm:text-sm 
       ${
         errors.lastName
@@ -231,6 +233,7 @@ export default function SignupForm() {
               type="text"
               id="email"
               value={formData.email}
+              placeholder="example@email.com"
               onChange={handleChange}
               className={`block w-full rounded-md border px-4 py-2 text-gray-900 sm:text-sm 
                 ${

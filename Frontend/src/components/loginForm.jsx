@@ -119,7 +119,9 @@ export default function LoginForm() {
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className={`block w-full rounded-md border px-4 py-2 text-gray-900 sm:text-sm 
+              placeholder="Enter your email"
+              autoComplete="off"
+              className={`block w-full rounded-md border px-4 py-2 outline-stone-400 text-gray-900 sm:text-sm 
                 ${
                   errors.email
                     ? "border-red-500"
@@ -155,7 +157,7 @@ export default function LoginForm() {
                 id="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`block w-full rounded-md border px-4 py-2 pr-10 text-gray-900 sm:text-sm 
+                className={`block w-full rounded-md border px-4 py-2 pr-10 outline-stone-400 text-gray-900 sm:text-sm 
                   ${
                     errors.password
                       ? "border-red-500"
