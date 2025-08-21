@@ -10,7 +10,7 @@ export const initiatePasswordReset = async (email) => {
     user.passwordResetExpires = Date.now() + 1000 * 60 * 30 // 30 minutes expiry
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${process.env.BACKEND_BASE_URL}/api/auth/reset-password/${token}`; // To be updated in the .env file with frontend base URL
+    const resetURL = `${process.env.BACKEND_URL}/api/auth/reset-password/${token}`; // To be updated in the .env file with frontend base URL
     await sendPasswordResetEmail(user.email, resetURL);
     return { message: 'Reset link sent to email'};
 }
