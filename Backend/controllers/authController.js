@@ -3,7 +3,9 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../models/user.js";
 import { createOTP, storeOTP, verifyOTP } from "../utils/otpUtils.js";
+import { initiatePasswordReset } from "../utils/passwordReset.js";
 import { sendOTPEmail } from "../utils/mailer.js";
+
 
 dotenv.config();
 
@@ -97,4 +99,67 @@ export const verifyOTPController = async (req, res) => {
   );
 
   res.status(200).json({ message: result.message, token });
+};
+
+/**
+ * @desc Controller to handle Google OAuth callback
+ * Passport sets req.user after successful authentication
+ * We issue a JWT and return user info to the client.
+ */
+export const googleAuthCallback = async (req, res) => {
+  try {
+    const user = req.user; // Passport attaches the authenticated user
+
+    // Generate JWT token with user ID as payload
+    const token = jwt.sign(
+      { id: user._id},
+      process.env.JWT_SECRET,
+      { expiresIn: '7d'} // Token valid for 7 days
+    )
+
+    // Respond with token and basic user info
+    res.status(200).json({
+      message: 'Google login successful',
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+        photo: user.photo
+      }
+    });
+  } catch (err) {
+    //Handle unexpected errors
+    res.status(500).json({ message: 'Google login failed', error: err.message})
+  }
+}
+/**
+ * @desc  Controller to handle user password reset using token
+ */
+export const forgotPassword = async (req, res) => {
+  try {
+    const result = await initiatePasswordReset(req.body.email)
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ message: err.message});
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  const user = await User.findOne({
+    passwordResetToken: token,
+    passwordResetExpires: { $gt: Date.now() }
+  });
+
+  if (!user) return res.status(400).json({ message: 'Token invalid or expired' });
+
+  user.password = newPassword;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+
+  res.status(200).json({ message: 'Password has been reset' });
 };
