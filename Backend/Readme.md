@@ -66,6 +66,28 @@
 - The JWT token is used to access protected routes.
 - It includes the user ID and expires after a set duration.
 - Store the token securely on the frontend (e.g., in localStorage or React context).
+## Forgot Password Process
+
+1. **User Requests Password Reset**  
+   The frontend sends a `POST` request to `/forgot-password` with the user's email.
+
+2. **Generate Reset Token**  
+   The backend checks if the user exists. If found, it generates a secure token using `crypto.randomBytes`, sets a 30-minute expiry, and saves it to the user's record.
+
+3. **Send Reset Link via Email**  
+   A reset link is emailed to the user:
+   The link expires in 30 minutes
+
+## Reset Password Process
+
+1. **User Clicks Reset Link**  
+The link opens a frontend page where the user can enter a new password.
+
+2. **Submit New Password**  
+The frontend sends a `POST` request to `/reset-password/:token` with the new password.
+
+3. **Token Validation & Password Update**  
+The backend verifies the token and expiry. If valid, it updates the user's password and clears the reset token and expiry fields.
 
 ## Axios Example and Usage
 
@@ -89,4 +111,14 @@ export const login = (credentials) => {
 // Sends the OTP received by the user to verify their identity
 export const verifyOtp = (otpData) => {
   return axios.post(`${API_BASE}/api/auth/verify-otp`, otpData);
+};
+
+// Request password reset link
+export const forgotPassword = (email) => {
+return axios.post(`${API_BASE}/api/auth/forgot-password`, { email });
+};
+
+// Submit new password using reset token
+export const resetPassword = (token, newPassword) => {
+return axios.post(`${API_BASE}/api/auth/reset-password/${token}`, { newPassword });
 };
