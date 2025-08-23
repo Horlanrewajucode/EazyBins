@@ -1,3 +1,4 @@
+import HomePage from "./pages/homePage";
 import LandingPage from "./pages/landingPage";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/SignUpPage";
@@ -5,7 +6,8 @@ import SignUpPage from "./pages/SignUpPage";
 function App() {
   return (
     <div>
-      <LandingPage />
+      {/* <LandingPage /> */}
+      <HomePage/>
       {/* <LoginPage/> */}
       {/* <SignUpPage/> */}
     </div>
