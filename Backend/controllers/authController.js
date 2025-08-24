@@ -16,11 +16,10 @@ dotenv.config();
  * - Generates and sends OTP for email verification
  */
 export const signupController = async (req, res) => {
-  const { fullName, username, email, phoneNumber, password, address, role } =
-    req.body;
+  const { firstName, lastName, email, password} = req.body;
 
   // Check if user already exists
-  const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+  const existingUser = await User.findOne({ email });
   if (existingUser) {
     return res
       .status(409)
@@ -29,13 +28,11 @@ export const signupController = async (req, res) => {
 
   // Create new user (password will be hashed via model hook)
   const newUser = await User.create({
-    fullName,
-    username,
+    firstName,
+    lastName,
     email,
-    phoneNumber,
     password,
-    address,
-    role,
+    profileCompleted: false
   });
 
   // Generate and send OTP for email verification
@@ -52,10 +49,12 @@ export const signupController = async (req, res) => {
  * - Sends OTP for second-factor authentication
  */
 export const loginController = async (req, res) => {
-  const { email, password } = req.body;
+  const { identifier, password } = req.body; // identifier ca be either username or email
 
   // Find user and explicitly include password field
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({
+    $or: [{ email: identifier}, { username: identifier}]
+   }).select("+password");
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
