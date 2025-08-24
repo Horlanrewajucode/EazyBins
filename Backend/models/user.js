@@ -2,145 +2,110 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 const userSchema = new mongoose.Schema(
   {
-    fullName: {
-      type: String,
-      required: [true, "Full name is required"],
-      trim: true,
-      minlength: [2, "Full name must be at least 2 characters long"],
-      maxlength: [100, "Full name cannot exceed 100 characters"],
-    },
-
-    username: {
-      type: String,
-      required: [true, "Username is required"],
-      unique: true,
-      trim: true,
-      lowercase: true,
-      minlength: [3, "Username must be at least 3 characters long"],
-      maxlength: [30, "Username cannot exceed 30 characters"],
-      match: [
-        /^[a-zA-Z0-9_]+$/,
-        "Username can only contain letters, numbers, and underscores",
-      ],
-    },
-
-    email: {
-      type: String,
-      required: [true, "Email is required"],
-      unique: true,
-      trim: true,
-      lowercase: true,
-      match: [
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Please provide a valid email address",
-      ],
-    },
-
-    phoneNumber: {
-      type: String,
-      required: [true, "Phone number is required"],
-      trim: true,
-      match: [/^\+?[1-9]\d{1,14}$/, "Please provide a valid phone number"],
-    },
-
-    address: {
-      street: {
-        type: String,
-        required: [true, "Street address is required"],
-        trim: true,
-        maxlength: [200, "Street address cannot exceed 200 characters"],
-      },
-      city: {
-        type: String,
-        required: [true, "City is required"],
-        trim: true,
-        maxlength: [100, "City name cannot exceed 100 characters"],
-      },
-      state: {
-        type: String,
-        required: [true, "State is required"],
-        trim: true,
-        maxlength: [100, "State name cannot exceed 100 characters"],
-      },
-      country: {
-        type: String,
-        required: [true, "Country is required"],
-        trim: true,
-        default: "United States",
-        maxlength: [100, "Country name cannot exceed 100 characters"],
-      },
-    },
-
-    // Fields for future JWT authentication
-    // i did not integrate the jwt yet .
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-      minlength: [8, "Password must be at least 8 characters long"],
-      select: false, // Don't include password in queries by default
-    },
-
-    role: {
-      type: String,
-      enum: ["user", "admin", "collector"],
-      default: "user",
-    },
-
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
-
-    emailVerificationToken: {
-      type: String,
-      select: false,
-    },
-
-    passwordResetToken: {
-      type: String,
-      select: false,
-    },
-
-    passwordResetExpires: {
-      type: Date,
-      select: false,
-    },
-
-    lastLogin: {
-      type: Date,
-    },
-
-    loginAttempts: {
-      type: Number,
-      default: 0,
-    },
-
-    lockUntil: {
-      type: Date,
-    },
+  firstName: {
+    type: String,
+    required: [true, "First name is required"],
+    trim: true,
+    minlength: [2, "First name must be at least 2 characters long"],
+    maxlength: [50, "First name cannot exceed 50 characters"]
   },
-  // this is like a security for the model. i did this so the password hash can not be sent by mistake to the frontend
-  // it also autmomatically updates the updatedAt field when changes are made to the user model.
-  {
-    timestamps: true, // Adds createdAt and updatedAt fields
-    toJSON: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        delete ret.password;
-        delete ret.emailVerificationToken;
-        delete ret.passwordResetToken;
-        delete ret.passwordResetExpires;
-        delete ret.__v;
-        return ret;
-      },
-    },
-    toObject: { virtuals: true },
+  lastName: {
+    type: String,
+    required: [true, "Last name is required"],
+    trim: true,
+    minlength: [2, "Last name must be at least 2 characters long"],
+    maxlength: [50, "Last name cannot exceed 50 characters"]
+  },
+  username: {
+    type: String,
+    unique: true,
+    trim: true,
+    lowercase: true,
+    minlength: [3, "Username must be at least 3 characters long"],
+    maxlength: [30, "Username cannot exceed 30 characters"],
+    match: [/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"]
+  },
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    unique: true,
+    trim: true,
+    lowercase: true,
+    match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please provide a valid email address"]
+  },
+  phoneNumber: {
+    type: String,
+    trim: true,
+    match: [/^\+?[1-9]\d{1,14}$/, "Please provide a valid phone number"]
+  },
+  address: {
+    street: { type: String, trim: true, maxlength: [200, "Street address cannot exceed 200 characters"] },
+    city: { type: String, trim: true, maxlength: [100, "City name cannot exceed 100 characters"] },
+    state: { type: String, trim: true, maxlength: [100, "State name cannot exceed 100 characters"] },
+    country: { type: String, trim: true, default: "United States", maxlength: [100, "Country name cannot exceed 100 characters"] }
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [8, "Password must be at least 8 characters long"],
+    select: false
+  },
+  role: {
+    type: String,
+    enum: ["user", "admin", "collector"],
+    default: "user"
+  },
+  profileCompleted: {
+    type: Boolean,
+    default: false
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  isEmailVerified: {
+    type: Boolean,
+    default: false
+  },
+  emailVerificationToken: {
+    type: String,
+    select: false
+  },
+  passwordResetToken: {
+    type: String,
+    select: false
+  },
+  passwordResetExpires: {
+    type: Date,
+    select: false
+  },
+  lastLogin: {
+    type: Date
+  },
+  loginAttempts: {
+    type: Number,
+    default: 0
+  },
+  lockUntil: {
+    type: Date
   }
+}, {
+  timestamps: true,
+  toJSON: {
+    virtuals: true,
+    transform: function (doc, ret) {
+      delete ret.password;
+      delete ret.emailVerificationToken;
+      delete ret.passwordResetToken;
+      delete ret.passwordResetExpires;
+      delete ret.__v;
+      return ret;
+    }
+  },
+  toObject: {
+    virtuals: true
+  }
+}
 );
 
 // Indexes for better query performance

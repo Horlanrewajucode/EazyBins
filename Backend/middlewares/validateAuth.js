@@ -7,64 +7,32 @@ dotenv.config(); //Load environment variables
 
 //Sign up validation schema
 const signupSchema = Joi.object({
-    fullName: Joi.string().min(2).max(100).required()
-    .messages({
-        'string.base': 'Full name must be a string',
-        'string.empty': 'Full name is required',
-        'string.min': 'Full name must be at least 2 characters',
-        'string.max': 'Full name cannot exceed 100 characters',
-    }),
-    username: Joi.string().alphanum().min(3).max(30).required()
-    .messages({
-        'string.base': 'Username must be a string',
-        'string.empty': 'Username is required',
-        'string.min': 'Username must contain at least 3 characters',
-        'string.max': 'Username cannot exceed 30 characters',
-        'string.alphanum': 'Username can only contain letters and numbers',
-    }),
-    email: Joi.string().email().required
-    .messages({
-        'string.email': 'Please provide a valid email address',
-        'string.empty': 'Email is required',
-    }),
-    phoneNumber: Joi.string().pattern(/^\+?[1-9]\d{1,14}$/).required()
-    .messages({
-        'string.pattern.base': 'Please provide a valid phone number',
-        'string.empty': 'Phone number is required',
-    }),
-    password: Joi.string().min(8)
-    .pattern(new RegExp('(?=.*[a-z])(?=.*[A-Z)(?=.*\\d)(?=.*[!@#$%^&*])'))
+  firstName: Joi.string().min(2).max(50).required().messages({
+    'string.base': 'First name must be a string',
+    'string.empty': 'First name is required',
+    'string.min': 'First name must be at least 2 characters',
+    'string.max': 'First name cannot exceed 50 characters',
+  }),
+  lastName: Joi.string().min(2).max(50).required().messages({
+    'string.base': 'Last name must be a string',
+    'string.empty': 'Last name is required',
+    'string.min': 'Last name must be at least 2 characters',
+    'string.max': 'Last name cannot exceed 50 characters',
+  }),
+  email: Joi.string().email().required().messages({
+    'string.email': 'Please provide a valid email address',
+    'string.empty': 'Email is required',
+  }),
+  password: Joi.string().min(8)
+    .pattern(new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])'))
     .required()
     .messages({
-        'string.pattern.base': 'Password must include uppercase, lowercase, number and special character',
-        'string.min': 'Password must be at least 8 characters long',
-        'string.empty': 'Password is required',
+      'string.pattern.base': 'Password must include uppercase, lowercase, number, and special character',
+      'string.min': 'Password must be at least 8 characters',
+      'string.empty': 'Password is required',
     }),
-    address: Joi.object({
-        street: Joi.string().max(200).required()
-        .messages({
-            'string.empty': 'Street address is required',
-            'string max': 'Street address cannot exceed 200 characters',
-        }),
-        city: Joi.string().max(100).required
-        .messages({
-            'string.empty': 'City is required',
-            'string.max': 'City name cannot exceed 100 charaters',
-        }),
-        state: Joi.string().max(100).required()
-        .messages({
-            'string.empty': 'State is required',
-            'string.max': 'State name cannot exceed 100 character',
-        }),
-        country: Joi.string().max(100).required()
-        .messages({
-            'string.empty': 'Country is required',
-            'string.max': 'Country name cannot exceed 100 characters',
-        }),
-    }).required(),
-    
-    role: Joi.string().valid('user','admin', 'collector').default('user'),
 });
+
 
 //Login validation schema
 const loginSchema =Joi.object({
@@ -90,7 +58,7 @@ const validateSignup = (req, res, next) => {
 
 // Middleware for login input validation
 const validateLogin = (req, res, next ) => {
-    const { error } = loginSchema.validate(re.body, {abortEarly: false});
+    const { error } = loginSchema.validate(req.body, {abortEarly: false});
     if (error) { 
         const errors = error.details.map((detail) => detail.message);
         return res.status(400).json({ errors });
