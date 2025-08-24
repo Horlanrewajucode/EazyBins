@@ -6,13 +6,13 @@ import { motion } from "framer-motion";
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    // confirmPassword: "",
     terms: false,
   });
   const [errors, setErrors] = useState({});
@@ -58,15 +58,15 @@ export default function SignupForm() {
       }
     }
 
-    if (id === "confirmPassword") {
-      if (!value.trim()) {
-        error = "Please confirm your password";
-      } else if (value !== formData.password) {
-        error = "Passwords do not match";
-      } else {
-        successMsg = "Passwords match ✔";
-      }
-    }
+    // if (id === "confirmPassword") {
+    //   if (!value.trim()) {
+    //     error = "Please confirm your password";
+    //   } else if (value !== formData.password) {
+    //     error = "Passwords do not match";
+    //   } else {
+    //     successMsg = "Passwords match ✔";
+    //   }
+    // }
 
     if (id === "terms") {
       if (!value) {
@@ -121,7 +121,7 @@ export default function SignupForm() {
         lastName: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        // confirmPassword: "",
         terms: false,   
     });
 
@@ -306,7 +306,7 @@ export default function SignupForm() {
           </div>
 
           {/* Confirm Password */}
-          <div>
+          {/* <div>
             <label
               htmlFor="confirmPassword"
               className="block text-sm font-medium text-gray-700 mb-1 text-left"
@@ -351,7 +351,7 @@ export default function SignupForm() {
                 {success.confirmPassword}
               </p>
             )}
-          </div>
+          </div> */}
 
           {/* Terms and Conditions */}
           <div className="flex items-center space-x-2">
