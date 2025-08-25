@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { useMutation } from "@tanstack/react-query";
+import { signup } from "../services/authservices";
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -112,22 +114,35 @@ export default function SignupForm() {
     }
 
     // Success
-    console.log("Signup form submitted:", formData);
-    alert("✅ Signup successful!");
+    // console.log("Signup form submitted:", formData);
+    // alert("✅ Signup successful!");
 
     // Resetting the form fields including errors and success messages
     setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        // confirmPassword: "",
-        terms: false,   
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      // confirmPassword: "",
+      terms: false,
     });
 
     setErrors({});
     setSuccess({});
+
+    mutation.mutate(formData); // pass form data to mutation
   };
+
+  const mutation = useMutation({
+    mutationFn: signup,
+    onSuccess: () => {
+      alert('successful')
+    },
+    onError: (error) => {
+      alert('error')
+      alert(error.response?.data?.message || error.message)
+    }
+})
 
   return (
     <div className="flex flex-1 items-center justify-center p-8">
