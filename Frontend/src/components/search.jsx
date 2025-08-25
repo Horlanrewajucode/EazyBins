@@ -2,9 +2,11 @@ import { useState } from "react";
 
 function Search() {
   const [search, setSearch] = useState("");
+
   function handleSearch(e) {
     setSearch(e.target.value);
   }
+  
   function handleSubmit(e) {
     e.preventDefault();
   }

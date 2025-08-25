@@ -1,4 +1,5 @@
 import Features from "../components/features";
+import Footer from "../components/footer";
 import GetStarted from "../components/getStarted";
 import NavBar from "../components/navBar";
 import Search from "../components/search";
@@ -10,6 +11,7 @@ function LandingPage() {
       <Search />
       <GetStarted />
       <Features />
+      <Footer/>
     </div>
   );
 }
