@@ -8,13 +8,11 @@ import { signup } from "../services/authservices";
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
-  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
-    // confirmPassword: "",
     terms: false,
   });
   const [errors, setErrors] = useState({});
@@ -59,16 +57,6 @@ export default function SignupForm() {
         successMsg = "Strong password ✔";
       }
     }
-
-    // if (id === "confirmPassword") {
-    //   if (!value.trim()) {
-    //     error = "Please confirm your password";
-    //   } else if (value !== formData.password) {
-    //     error = "Passwords do not match";
-    //   } else {
-    //     successMsg = "Passwords match ✔";
-    //   }
-    // }
 
     if (id === "terms") {
       if (!value) {
@@ -123,7 +111,6 @@ export default function SignupForm() {
       lastName: "",
       email: "",
       password: "",
-      // confirmPassword: "",
       terms: false,
     });
 
@@ -139,7 +126,7 @@ export default function SignupForm() {
       alert('successful')
     },
     onError: (error) => {
-      alert('error')
+      // alert('error')
       alert(error.response?.data?.message || error.message)
     }
 })
@@ -320,53 +307,7 @@ export default function SignupForm() {
             )}
           </div>
 
-          {/* Confirm Password */}
-          {/* <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 mb-1 text-left"
-            >
-              Confirm Password
-            </label>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                id="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className={`block w-full rounded-md border px-4 py-2 pr-10 text-gray-900 sm:text-sm 
-                  ${
-                    errors.confirmPassword
-                      ? "border-red-500"
-                      : success.confirmPassword
-                      ? "border-green-500"
-                      : "border-gray-300"
-                  }
-                `}
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
-              >
-                {showConfirmPassword ? (
-                  <EyeIcon size={18} />
-                ) : (
-                  <EyeOffIcon size={18} />
-                )}
-              </button>
-            </div>
-            {errors.confirmPassword && (
-              <p className="mt-1 text-xs text-red-500 text-left">
-                {errors.confirmPassword}
-              </p>
-            )}
-            {success.confirmPassword && (
-              <p className="mt-1 text-xs text-green-600 text-left">
-                {success.confirmPassword}
-              </p>
-            )}
-          </div> */}
+          
 
           {/* Terms and Conditions */}
           <div className="flex items-center space-x-2">

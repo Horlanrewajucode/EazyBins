@@ -6,8 +6,8 @@ export async function signup(formData) {
     // console.log(response)
     return response.data;
   } catch (error) {
-    // console.error("❌ Signup error:", error.response?.data || error.message);
-    throw new Error(error);
-    
+    const message =
+      error.response?.data?.message || error.message || "Signup failed";
+    throw new Error(message);
   }
 }
