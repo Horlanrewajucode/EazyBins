@@ -1,6 +1,7 @@
 import express from "express";
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js'
+import userRoutes from './routes/userRoutes.js';
 import dotenv from 'dotenv';
 const app = express();
 dotenv.config();
@@ -24,6 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-app.use("/api/auth", authRoutes); // authRoute
-
+app.use("/api/auth", authRoutes); // authRoutes
+app.use('/api/user', userRoutes); //userRoutes
 export default app;
