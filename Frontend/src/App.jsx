@@ -6,7 +6,7 @@ import SignUpPage from "./pages/SignUpPage";
 function App() {
   return (
     <div>
-      <LandingPage />
+      {/* <LandingPage /> */}
       <HomePage />
       {/* <LoginPage/> */}
       {/* <SignUpPage/> */}
