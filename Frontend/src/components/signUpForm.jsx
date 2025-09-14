@@ -4,7 +4,9 @@ import { useState } from "react";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
-import { signup } from "../services/authservices";
+import { signup } from "../services/signupAuth";
+import { Link, useNavigate } from "react-router-dom";
+import Loader from "./loader";
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,10 +15,11 @@ export default function SignupForm() {
     lastName: "",
     email: "",
     password: "",
-    terms: false,
+    // terms: false,
   });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState({});
+  const navigate = useNavigate();
 
   const validateField = (id, value) => {
     let error = "";
@@ -58,13 +61,13 @@ export default function SignupForm() {
       }
     }
 
-    if (id === "terms") {
-      if (!value) {
-        error = "You must agree to the terms";
-      } else {
-        successMsg = "✔";
-      }
-    }
+    // if (id === "terms") {
+    //   if (!value) {
+    //     error = "You must agree to the terms";
+    //   } else {
+    //     successMsg = "✔";
+    //   }
+    // }
 
     return { error, successMsg };
   };
@@ -105,31 +108,37 @@ export default function SignupForm() {
     // console.log("Signup form submitted:", formData);
     // alert("✅ Signup successful!");
 
+    mutation.mutate(formData);
+
     // Resetting the form fields including errors and success messages
     setFormData({
       firstName: "",
       lastName: "",
       email: "",
       password: "",
-      terms: false,
+      // terms: false,
     });
 
     setErrors({});
     setSuccess({});
 
-    mutation.mutate(formData); // pass form data to mutation
   };
 
   const mutation = useMutation({
     mutationFn: signup,
-    onSuccess: () => {
-      alert('successful')
+    onSuccess: (_, variables) => {
+      // alert('successful')
+      localStorage.setItem("signupEmail", variables.email);
+      // after successful login/signup
+      // localStorage.setItem("authToken", response.data.token);
+
+      navigate("/otp-page");
     },
     onError: (error) => {
       // alert('error')
-      alert(error.response?.data?.message || error.message)
-    }
-})
+      alert(error.response?.data?.message || error.message);
+    },
+  });
 
   return (
     <div className="flex flex-1 items-center justify-center p-8">
@@ -307,10 +316,8 @@ export default function SignupForm() {
             )}
           </div>
 
-          
-
           {/* Terms and Conditions */}
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <input
               id="terms"
               type="checkbox"
@@ -324,12 +331,13 @@ export default function SignupForm() {
                 terms and conditions
               </a>
             </label>
-          </div>
-          {errors.terms && (
+          </div> */}
+
+          {/* {errors.terms && (
             <p className="mt-1 text-xs text-red-500 text-left">
               {errors.terms}
             </p>
-          )}
+          )} */}
 
           {/* Signup button */}
           <button
@@ -342,9 +350,15 @@ export default function SignupForm() {
           {/* Login link */}
           <p className="text-center text-gray-700 text-sm">
             Already have an account?{" "}
-            <a href="#" className="text-green-600 font-medium hover:underline">
+            {/* <a href="#" className="text-green-600 font-medium hover:underline">
               Log In
-            </a>
+            </a> */}
+            <Link
+              to="/login"
+              className="text-green-600 font-medium hover:underline"
+            >
+              Log In
+            </Link>
           </p>
         </form>
       </motion.div>

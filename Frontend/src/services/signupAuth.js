@@ -2,6 +2,7 @@ import { api } from "../libs/baseapi";
 
 export async function signup(formData) {
   try {
+    console.log(formData)
     const response = await api.post("/api/auth/signup", formData);
     return response.data;
   } catch (error) {

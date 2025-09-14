@@ -3,12 +3,16 @@
 import { useState } from "react";
 import { EyeOffIcon, EyeIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../services/loginAuth";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState({});
+  const navigate = useNavigate();
 
   const validateField = (id, value) => {
     let error = "";
@@ -75,7 +79,14 @@ export default function LoginForm() {
 
     // Success
     console.log("Form submitted:", formData);
-    alert("✅ Login successful!");
+    // alert("✅ Login successful!");
+
+    const payload = {
+      identifier: formData.email,
+      password: formData.password,
+    };
+
+    console.log("Form submitted:", payload);
 
     // Resetting all fields including errors and success messages
     setFormData({
@@ -84,7 +95,23 @@ export default function LoginForm() {
     });
     setErrors({});
     setSuccess({});
+
+    mutation.mutate(payload);
   };
+
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data, variables) => {
+      // alert('successful')
+      localStorage.setItem("token", data.token || "true");
+      localStorage.setItem("signupEmail", variables.identifier);
+      navigate("/homePage");
+    },
+    onError: (error) => {
+      // alert('error')
+      alert(error.response?.data?.message || error.message);
+    },
+  });
 
   return (
     <div className="flex flex-1 items-center justify-center p-8">
@@ -212,9 +239,15 @@ export default function LoginForm() {
           {/* Sign up link */}
           <p className="text-center text-gray-700 text-sm">
             Don’t Have An Account?{" "}
-            <a href="#" className="text-green-600 font-medium hover:underline">
+            {/* <a href="#" 
+              
+            </a> */}
+            <Link
+              to="/signup"
+              className="text-green-600 font-medium hover:underline"
+            >
               Sign Up
-            </a>
+            </Link>
           </p>
         </form>
       </motion.div>
