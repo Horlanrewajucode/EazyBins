@@ -10,6 +10,7 @@ import PublicRoute from "./routes/publicRoutes";
 function App() {
   // const Navigate = useNavigate();
   return (
+<<<<<<< HEAD
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />

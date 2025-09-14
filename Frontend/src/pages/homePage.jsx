@@ -1,136 +1,177 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../components/logo";
 import Card from "../components/card";
+import HomePageNavBar from "../components/homePageNavBar";
+import NavBar from "../components/navBar";
+import HomePageSearch from "../components/homePageSearch";
+import HomePageUser from "../components/homePageUser";
+import PrimaryButton from "../components/primaryButton";
+import SecondaryButton from "../components/secondaryButton";
+import WalletBalance from "../components/walletBalance";
+import Explore from "../components/explore";
+import HomePageSidebar from "../components/homePageSidebar";
 
 const HomePage = () => {
+  const [openSideBar, setOpenSideBar] = useState(false);
+
+  const toggleSideBar = () => {
+    setOpenSideBar(openSideBar => !openSideBar)
+  };
+    // setOpenSidebar((prev) => !prev);
+
   return (
-    <div className="w-full h-screen bg-white pl-4 pr-10">
-      {/* Header */}
-      <header className="w-full flex flex-col pr-9">
-        <nav className=" w-100% bg-white flex flex-row items-center justify-between pl-2 pt-4 pr-2 ">
-          {/* Logo */}
-          <div className="flex flex-row items-center pl-5">
-            <div className="cursor-pointer">
-              {" "}
-              <img src="/Vectorhome.png" alt="" />
-            </div>
+    <div className="w-full h-[100%] lg:flex lg:flex-row md:items">
+      {/* SideBar */}
 
-            <div className="logo cursor-pointer">
-              {<Logo />}
-              {/* <img src="/Eazybins-logo.svg" alt="" /> */}
-            </div>
-          </div>
-
-          {/* Links */}
-          <ul className="links list-none space-x-15 flex flex-row justify-between items-center mr-5 ">
-            <li className="cursor-pointer text-sm font-bold">Chat</li>
-            <li className="cursor-pointer text-sm font-bold">Wallet</li>
-            <li className="cursor-pointer text-sm font-bold">Schedule</li>
-            <li className="cursor-pointer text-sm font-bold">
-              Educational Hub
-            </li>
-          </ul>
-
-          <div className="flex flex-row items-center justify-between ">
-            <div>
-              <img
-                className="mr-7 cursor-pointer"
-                src="/noti.png"          
-              />
-            </div>
-            <div>
-              <img className="cursor-pointer" src="/profile.png" alt="profile-img" />
-            </div>
-          </div>
-        </nav>
-
-        {/* search */}
-
-        <div className="mt-8">
-          <div className="w-[550px] bg-[#EEEFEC] pl-2 text-sm rounded-md flex justify-self-end items-center justify-between pr-4">
-            <input
-              className="w-full p-1 focus:outline-none "
-              type="text"
-              placeholder="Search"
-            />
-            <img className="ml-2 cursor-pointer" src="/dropdown.png" alt="" />
-          </div>
-        </div>
-      </header>
-
-      {/* welcome message */}
-      <div className="w-full mt-5 flex pl-1 flex-row items-center justify-between">
-        <h1
-          className="text-3xl pr-3 pl-14 font-[800] border-t-4
-        border-b-4 border-r-60 border-[#F0E1F5]"
-        >
-          Welcome Back, User{" "}
-        </h1>
-        <div className="flex flex-row items-center justify-end mr-10">
-          <button className="pt-2 pb-2 pl-4 pr-4 mt-2 mb-2 mr-3 rounded-md border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]">
-            Request Pickup
-          </button>
-          <span className="p-3 border text-[#B673CE] border-2-[#F0E1F5] text-sm font-bold rounded-md cursor-pointer">
-            View History
-          </span>
-        </div>
-      </div>
-
-      {/* wallet balance */}
-      <section className="w-full flex flex-col rounded-sm pb-7  shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] mt-5 pr-7 pl-3 bg-[#EEEFEC]">
-        <div className="flex flex-row items-center mt-2 pr-12 justify-between">
-          <div className="flex flex-row items-center pb-2 pt-2">
-            <img src="/tdesign_money.png" alt="" />
-            <p className="text-sm text-[#101010] ml-2">WALLET BALANCE</p>
-          </div>
-
-          <img className="cursor-pointer" src="/eye.png" alt="" />
-        </div>
-
-        <div className="mt-4">
-          <p className="text-2xl font-bold p-1 text-[#6CBF4B]">#0.00</p>
-        </div>
-
-        <div className="flex mt-42flex-row items-center justify-center">
-          <button className="text-[15px] text-[#B673CE] p-2">
-            View History
-          </button>
-        </div>
-      </section>
-
-      {/* Explore */}
-      <div className="mt-5">
-        <p className="text-[#101010] text-sm font-semibold ml-2">Explore</p>
-      </div>
-
-      {/* Cards grid grid-cols-1 gap-9 mb-5  md:grid-cols-2 lg:grid-cols-3*/}
-      <div   className=" flex flex-col lg:flex-row justify-between items-stretch pb-9 pt-9 gap-6" >
-        <Card
-          title="Convenient Pickups"
-          images="/card-img1.png"
-          desc="Earn points for recycling and redeem them for exciting rewards"
-          buttonText="Request Pickup"
-      buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+      {openSideBar ?
+      <>
+    <div className="w-[18%] hidden md:hidden lg:block bg-[#EEEFEC] ">
+        <HomePageSidebar
+          toggleSideBar = {toggleSideBar}
+        
         />
+      </div>
+
+
+      <div className="w-full flex-1 flex-col items-center mb-7 gap-2 pl-4 pr-6">
+        <HomePageNavBar
+         
+          toggleSideBar = {toggleSideBar}
+          
+          
+          
+        />
+
+        {/* Search */}
+        <div className="mt-4 flex flex-row items-center justify-center  md:w-full  md:flexx md:items-center md:justify-end md:mt-6">
+          {" "}
+          <HomePageSearch />
+        </div>
+
+        {/* welcome message */}
+        <div className="w-full p-2 flex flex-col items-center justify-center  mt-5 md:w-full md:flex  md:flex-row md:items-center md:justify-between  ">
+          <HomePageUser />
+          <div className="mt-5 flex flex-row justify-center items-center  md:flex md:flex-row md:items-center  md:justify-between md:mt-0 ">
+            {/*  */}
+            <PrimaryButton
+              buttonText="Request Pickup"
+              buttonColor=" border-none  mr-5  cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+            />
+
+            <SecondaryButton
+              buttonColor="p-3 border border-2-[#B673CE] text-sm font-bold rounded-md cursor-pointer hover:shadow-md"
+              buttonText="View History"
+            />
+          </div>
+        </div>
+
+        {/* wallet balance */}
+        <section className="w-full flex flex-col rounded-sm pb-7  shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] mt-5 pr-7 pl-3 bg-[#EEEFEC]">
+          <WalletBalance />
+        </section>
+
+        {/* Explore */}
+        <div className="mt-8 md:w-full md:flex flex md:flex-row md:items-center md:justify-self-start">
+          <Explore />
+        </div>
+
+        {/* Card */}
+        <div className="w-full border-t-[0.5px] flex flex-col items-center gap-6 lg:flex-row md:flex-row md:justify-between md:items-stretch pb-2 md:gap-6 ">
+          <Card
+            title="Convenient Pickups"
+            images="/card-img1.png"
+            desc="Earn points for recycling and redeem them for exciting rewards"
+            buttonText="Request Pickup"
+            buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+          />
 
           <Card
-          title="Convenient Pickups"
-          images="/card-img2.png"
-          desc="Earn points for recycling and redeem them for exciting rewards"
-          buttonText="Request Pickup"
-         buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
-        />
+            title="Convenient Pickups"
+            images="/card-img2.png"
+            desc="Earn points for recycling and redeem them for exciting rewards"
+            buttonText="Request Pickup"
+            buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+          />
 
-         <Card
-          title="Convenient Pickups"
-          images="/card-img3.png"
-          desc="Monitor your watse disposal and see the difference you are making"
-          buttonText="Request Pickup"
-          buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
-        />
-
-       
+          <Card
+            title="Convenient Pickups"
+            images="/card-img3.png"
+            desc="Monitor your watse disposal and see the difference you are making"
+            buttonText="Request Pickup"
+            buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+          />
+        </div>
       </div>
+</>
+      :
+      <div className="w-full flex-1 flex-col items-center mb-7 gap-2 pl-4 pr-6">
+        <HomePageNavBar
+        
+          toggleSideBar = {toggleSideBar}
+        />
+
+        {/* Search */}
+        <div className="mt-4 flex flex-row items-center justify-center  md:w-full  md:flexx md:items-center md:justify-end md:mt-6">
+          {" "}
+          <HomePageSearch />
+        </div>
+
+        {/* welcome message */}
+        <div className="w-full p-2 flex flex-col items-center justify-center  mt-5 md:w-full md:flex  md:flex-row md:items-center md:justify-between  ">
+          <HomePageUser />
+          <div className="mt-5 flex flex-row justify-center items-center  md:flex md:flex-row md:items-center  md:justify-between md:mt-0 ">
+            {/*  */}
+            <PrimaryButton
+              buttonText="Request Pickup"
+              buttonColor=" border-none  mr-5  cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+            />
+
+            <SecondaryButton
+              buttonColor="p-3 border border-2-[#B673CE] text-sm font-bold rounded-md cursor-pointer hover:shadow-md"
+              buttonText="View History"
+            />
+          </div>
+        </div>
+
+        {/* wallet balance */}
+        <section className="w-full flex flex-col rounded-sm pb-7  shadow-[0_4px_6px_-1px_rgba(0,0,0,0.3)] mt-5 pr-7 pl-3 bg-[#EEEFEC]">
+          <WalletBalance />
+        </section>
+
+        {/* Explore */}
+        <div className="mt-8 md:w-full md:flex flex md:flex-row md:items-center md:justify-self-start">
+          <Explore />
+        </div>
+
+        {/* Card */}
+        <div className="w-full border-t-[0.5px] flex flex-col items-center gap-6 lg:flex-row md:flex-row md:justify-between md:items-stretch pb-2 md:gap-6 ">
+          <Card
+            title="Convenient Pickups"
+            images="/card-img1.png"
+            desc="Earn points for recycling and redeem them for exciting rewards"
+            buttonText="Request Pickup"
+            buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+          />
+
+          <Card
+            title="Convenient Pickups"
+            images="/card-img2.png"
+            desc="Earn points for recycling and redeem them for exciting rewards"
+            buttonText="Request Pickup"
+            buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+          />
+
+          <Card
+            title="Convenient Pickups"
+            images="/card-img3.png"
+            desc="Monitor your watse disposal and see the difference you are making"
+            buttonText="Request Pickup"
+            buttonColor="border-none cursor-pointer shadow-sm hover:shadow-md text-sm font-bold text-white bg-[#159212] hover:bg-[#6CBF4B]"
+          />
+        </div>
+      </div>
+
+      }
     </div>
   );
 };
