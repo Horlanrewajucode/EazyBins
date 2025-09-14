@@ -2,6 +2,7 @@ import { useState } from "react";
 import Logo from "./logo";
 import { HiMenu } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,9 +113,12 @@ function NavBar() {
         <span className="cursor-pointer">
           <img src="./line-md_bell-loop.svg" alt="Notification-icon" />
         </span>
-        <button className="bg-green-600 text-white py-2 px-5 rounded-2xl hidden md:flex cursor-pointer hover:font-bold hover:bg-green-800 duration-500">
+        <Link
+          to="/signup"
+          className="bg-green-600 text-white py-2 px-5 rounded-2xl hidden md:flex cursor-pointer hover:font-bold hover:bg-green-800 duration-500"
+        >
           Sign in
-        </button>
+        </Link>
         <span className="cursor-pointer">
           <img src="./profile.svg" alt="Profile-icon" />
         </span>
