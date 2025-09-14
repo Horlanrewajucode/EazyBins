@@ -7,7 +7,10 @@ function App() {
   return (
     <div>
       {/* <LandingPage /> */}
+ 
+      <HomePage />
       {/* <HomePage/> */}
+
       {/* <LoginPage/> */}
       <SignUpPage/>
     </div>
