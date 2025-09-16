@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function GetStartedText() {
   return (
     <article className="flex flex-col gap-6 items-center-safe px-8 leading-4">
@@ -10,9 +12,9 @@ function GetStartedText() {
         </p>
       </div>
       <div className="flex md:gap-8 gap-5">
-        <button className="cursor-pointer bg-green-800 font-semibold text-white px-6 py-3 rounded-2xl hover:font-bold duration-500">
+        <Link to='/signup' className="cursor-pointer bg-green-800 font-semibold text-white px-6 py-3 rounded-2xl hover:font-bold duration-500">
           Get Started
-        </button>
+        </Link>
         <button className="cursor-pointer font-semibold px-6 py-3 border-3 border-gray-300 rounded-2xl hover:font-bold duration-500">
           View History
         </button>
