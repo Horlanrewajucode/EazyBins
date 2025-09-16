@@ -7,12 +7,13 @@ import {
     forgotPassword,
     resetPassword,
 } from '../controllers/authController.js';
+import { validateSignup, validateLogin, sanitizeSignupInput, sanitizeLoginInput } from '../middlewares/validateAuth.js';
 import passport from 'passport';
 
 const router = express.Router();
 
-router.post('/signup', signupController);
-router.post('/login', loginController);
+router.post('/signup', sanitizeSignupInput ,validateSignup, signupController);
+router.post('/login', sanitizeLoginInput, validateLogin, loginController);
 router.post('/verify-otp', verifyOTPController);
 
 // //To be uncommented, when OAuth is implemented

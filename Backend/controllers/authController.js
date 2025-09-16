@@ -16,62 +16,82 @@ dotenv.config();
  * - Generates and sends OTP for email verification
  */
 export const signupController = async (req, res) => {
-  const { firstName, lastName, email, password} = req.body;
+  try {
+    const { firstName, lastName, email, password} = req.body;
 
-  // Check if user already exists
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return res
-      .status(409)
-      .json({ error: "User with this email or username already exists" });
-  }
+    // Check if user already exists 
+    const existingUser = await User.findOne({ email})
+    if (existingUser) {
+      return res.status(409).json({ error: " User with this email already exists"});
+    }
 
-  // Create new user (password will be hashed via model hook)
-  const newUser = await User.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    profileCompleted: false
-  });
+    // Create new user(password hashing handled in User model pre-save hook)
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      profileCompleted: false
+    });
 
-  // Generate and send OTP for email verification
-  const otp = createOTP();
-  storeOTP(email, otp);
-  await sendOTPEmail(email, otp);
-
-  res.status(201).json({ message: "User created. OTP sent for verification." });
+    // Generate and send OTP for email verification
+    const otp = createOTP();
+    storeOTP(email, otp);
+    await sendOTPEmail(email, otp);
+    
+    res.status(201).json({ message: 'User created successfully. OTP sent for verification.'});
+    } catch (error) {
+      res.status(500).json({ error: "An unexpected error occurred, please try again later."})
+    }
 };
 
 /**
  * @desc Handles user login
- * - Verifies email and password
- * - Sends OTP for second-factor authentication
+ * - Accepts either email or username as identifier
+ * - Verifies password against stored hash
+ * - Checks if email is verified
+ * - Issues JWT token upon successful authentication
  */
 export const loginController = async (req, res) => {
-  const { identifier, password } = req.body; // identifier ca be either username or email
+  const { identifier, password } = req.body; // identifier can be either email or username
 
-  // Find user and explicitly include password field
-  const user = await User.findOne({
-    $or: [{ email: identifier}, { username: identifier}]
-   }).select("+password");
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
+  try {
+    // Attempt to find user by email or username
+    const user = await User.findOne({
+      $or: [{ email: identifier }, { username: identifier }]
+    }).select('+password'); // explicitly include password field
+
+    // If no user is found, return 404
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Compare provided password with stored hashed password
+    const isMatch = await bcrypt.compare(password.trim(), user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    // Ensure user has verified their email before allowing login
+    if (!user.isEmailVerified) {
+      return res.status(403).json({ error: 'Please verify your email before logging in' });
+    }
+
+    // Generate JWT token for authenticated session
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h'
+    });
+
+    // Respond with token and success message
+    res.status(200).json({
+      message: 'Login successful',
+      token
+    });
+
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Server error. Please try again later.' });
   }
-
-  // Compare incoming password with stored hash
-  const isMatch = await bcrypt.compare(password.trim(), user.password);
-
-  if (!isMatch) {
-    return res.status(401).json({ error: "Invalid credentials" });
-  }
-
-  // Generate and send OTP for login verification
-  const otp = createOTP();
-  storeOTP(user.email, otp);
-  await sendOTPEmail(user.email, otp);
-
-  res.status(200).json({ message: "OTP sent for login verification." });
 };
 
 /**
@@ -80,24 +100,43 @@ export const loginController = async (req, res) => {
  * - Issues JWT token if OTP is valid
  */
 export const verifyOTPController = async (req, res) => {
-  const { email, otp } = req.body;
+  try {
+    const { email, otp } = req.body;
 
-  const result = verifyOTP(email, otp);
-  if (!result.success) {
-    return res.status(400).json({ error: result.message });
+    // Validate input (optional but good practice)
+    if (!email || !otp) {
+      return res.status(400).json({ error: 'Email and OTP are required.' });
+    }
+
+    // Verify OTP
+    const result = verifyOTP(email, otp);
+    if (!result.success) {
+      return res.status(400).json({ error: result.message });
+    }
+
+    // Fetch user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    // Mark email as verified
+    user.isEmailVerified = true;
+    await user.save();
+
+    // Issue JWT token
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({ message: result.message, token });
+
+  } catch (err) {
+    console.error('OTP verification error:', err);
+    res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
-
-  // Optional: fetch user for token payload
-  const user = await User.findOne({ email });
-
-  // Issue JWT token
-  const token = jwt.sign(
-    { id: user._id }, // use user ID for token payload
-    process.env.JWT_SECRET,
-    { expiresIn: "1h" }
-  );
-
-  res.status(200).json({ message: result.message, token });
 };
 
 /**
@@ -145,20 +184,36 @@ export const forgotPassword = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  const { token } = req.params;
-  const { newPassword } = req.body;
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
 
-  const user = await User.findOne({
-    passwordResetToken: token,
-    passwordResetExpires: { $gt: Date.now() }
-  });
+    // Validate newPassword
+    const { error } = resetPasswordSchema.validate({ newPassword });
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
 
-  if (!user) return res.status(400).json({ message: 'Token invalid or expired' });
+    // Find user with valid token
+    const user = await User.findOne({
+      passwordResetToken: token,
+      passwordResetExpires: { $gt: Date.now() }
+    });
 
-  user.password = newPassword;
-  user.passwordResetToken = undefined;
-  user.passwordResetExpires = undefined;
-  await user.save();
+    if (!user) {
+      return res.status(400).json({ error: 'Token invalid or expired' });
+    }
 
-  res.status(200).json({ message: 'Password has been reset' });
+    // Update password
+    user.password = newPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Password has been reset successfully' });
+
+  } catch (err) {
+    console.error('Reset password error:', err);
+    res.status(500).json({ error: 'Something went wrong. Please try again.' });
+  }
 };
