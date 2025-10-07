@@ -1,7 +1,10 @@
 import express from "express";
 import cors from 'cors';
-import authRoutes from './routes/authRoutes.js'
+import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import paystackRoutes from './routes/paystackRoutes.js';
+import pickupRoutes from './routes/pickupRoutes.js';
+// import "./cron/subscriptionCron.js"; // Uncomment to enable cron job
 import dotenv from 'dotenv';
 const app = express();
 dotenv.config();
@@ -25,6 +28,10 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-app.use("/api/auth", authRoutes); // authRoutes
-app.use('/api/user', userRoutes); //userRoutes
+app.use('/api/auth', authRoutes); // authRoutes
+app.use('/api/user', userRoutes); // userRoutes
+app.use('/api/paystack', paystackRoutes); // paystackRoutes
+app.use('/api/pickups', pickupRoutes); // pickupRoutes
+
+
 export default app;
