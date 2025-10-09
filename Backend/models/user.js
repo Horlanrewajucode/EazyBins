@@ -84,6 +84,10 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin", "collector"],
       default: "user",
     },
+    subscription: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subscription"
+    },
     profileCompleted: {
       type: Boolean,
       default: false,
