@@ -49,7 +49,7 @@ const PickupSchema = new mongoose.Schema({
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: "Collector",
   // },  // Not certain since we're going to have collectors view available pickups by region
-
+  
   paymentReference: { type: String },
   paidAt: { type: Date },
 
