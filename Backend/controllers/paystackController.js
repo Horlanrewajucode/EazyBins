@@ -2,6 +2,7 @@ import {
   initializeTransaction,
   verifyTransaction,
 } from "../services/paystackService.js";
+import Pickup from "../models/pickup.js";
 
 export const initiatePickupPayment = async (req, res) => {
   try {
@@ -30,11 +31,20 @@ export const verifyPickupPayment = async (req, res) => {
     const result = await verifyTransaction(reference);
 
     if (result?.data?.status === "success") {
-      // TODO: Update pickup status in DB
-      console.log("Sending success response:", result.data);
+      const pickupId  = result.data.metadata?.pickupId;
+      const pickup = await Pickup.findById(pickupId);
+      
+      if (pickup && pickup.paymentStatus != "paid") {
+      await Pickup.findByIdAndUpdate(pickupId, {
+        paymentStatus: "paid",
+        paymentReference: result.data.reference,
+        paidAt: Date(),
+        visibility: true,
+      })
+    }
       return res
         .status(200)
-        .json({ message: "Payment verified", data: result.data });
+        .json({ message: "Payment verified" });
     }
     res.status(400).json({ message: "Payment unsuccessful" });
   } catch (error) {
