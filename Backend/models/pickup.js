@@ -13,7 +13,7 @@ const PickupSchema = new mongoose.Schema({
     required: true,
   },
 
-  status: {
+  pickupStatus: {
     type: String,
     enum: ["pending", "assigned", "in-progress", "completed", "cancelled", "unpaid"],
     default: "pending",
@@ -25,7 +25,7 @@ const PickupSchema = new mongoose.Schema({
     default: "pending",
   },
   location: {
-    address: { type: String, required: true }
+    address: { type: String, required: true },
     // coordinates: {
     //   lat: { type: Number },
     //   lng: { type: Number },
@@ -39,7 +39,7 @@ const PickupSchema = new mongoose.Schema({
   },
 
   scheduledDate: { type: Date }, // For one-time pickups
-  
+
   subscription: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Subscription", // Links pickup to user's active subscription
@@ -50,7 +50,7 @@ const PickupSchema = new mongoose.Schema({
   //   ref: "Collector",
   // },  // Not certain since we're going to have collectors view available pickups by region
 
-  paymentReference: { type: String},
+  paymentReference: { type: String },
   paidAt: { type: Date },
 
   notes: { type: String },
