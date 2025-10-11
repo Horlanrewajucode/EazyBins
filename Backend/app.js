@@ -5,7 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import paystackRoutes from "./routes/paystackRoutes.js";
 import pickupRoutes from "./routes/pickupRoutes.js";
 import collectorRoutes from "./routes/collectorRoutes.js";
-
+import webhookRoutes from "./routes/webhookRoutes.js";
 // import "./cron/subscriptionCron.js"; // Uncomment to enable cron job
 import dotenv from "dotenv";
 const app = express();
@@ -37,5 +37,5 @@ app.use("/api/user", userRoutes); // userRoutes
 app.use("/api/paystack", paystackRoutes); // paystackRoutes
 app.use("/api/pickups", pickupRoutes); // pickupRoutes
 app.use("/api/collectors", collectorRoutes); // collectorRoutes
-
+app.use("/api/webhooks", webhookRoutes); // webhookRoutes
 export default app;
