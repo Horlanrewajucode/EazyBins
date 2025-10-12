@@ -10,6 +10,7 @@ import webhookRoutes from "./routes/webhookRoutes.js";
 import dotenv from "dotenv";
 const app = express();
 dotenv.config();
+app.set('trust proxy', true)
 
 // Middleware and routes
 const allowedOrigin = [process.env.FRONTEND_URL];
