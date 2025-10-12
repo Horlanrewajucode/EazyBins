@@ -7,7 +7,6 @@ import { createOTP, storeOTP, verifyOTP } from "../utils/otpUtils.js";
 import { initiatePasswordReset } from "../utils/passwordReset.js";
 import { sendOTPEmail } from "../utils/mailer.js";
 
-
 dotenv.config();
 
 /**
@@ -18,12 +17,14 @@ dotenv.config();
  */
 export const signupController = async (req, res) => {
   try {
-    const { firstName, lastName, email, password} = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
-    // Check if user already exists 
-    const existingUser = await User.findOne({ email})
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ error: " User with this email already exists"});
+      return res
+        .status(409)
+        .json({ error: " User with this email already exists" });
     }
 
     // Create new user(password hashing handled in User model pre-save hook)
@@ -32,18 +33,18 @@ export const signupController = async (req, res) => {
       lastName,
       email,
       password,
-      profileCompleted: false
+      profileCompleted: false,
     });
 
     // Auto-assign Basic subscription to new users
-    const basicSubscription =  await Subscription.create({ 
+    const basicSubscription = await Subscription.create({
       user: newUser.id,
       plan: "basic",
       pickupQuota: 3,
       pickupUsed: 0,
       startDate: new Date(),
       endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-      active: true
+      active: true,
     });
 
     newUser.subscription = basicSubscription._id;
@@ -53,11 +54,17 @@ export const signupController = async (req, res) => {
     const otp = createOTP();
     storeOTP(email, otp);
     await sendOTPEmail(email, otp);
-    
-    res.status(201).json({ message: 'User created successfully. OTP sent for verification.'});
-    } catch (error) {
-      res.status(500).json({ error: "An unexpected error occurred, please try again later."})
-    }
+
+    return res
+      .status(201)
+      .json({
+        message: "User created successfully. OTP sent for verification.",
+      });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "An unexpected error occurred, please try again later." });
+  }
 };
 
 /**
@@ -73,39 +80,40 @@ export const loginController = async (req, res) => {
 
     // Attempt to find user by email or username
     const user = await User.findOne({
-      $or: [{ email: identifier }, { username: identifier }]
-    }).select('+password'); // explicitly include password field
+      $or: [{ email: identifier }, { username: identifier }],
+    }).select("+password"); // explicitly include password field
 
     // If no user is found, return 404
     if (!user) {
-      return res.status(404).json({ error: 'Invalid credentials' });
+      return res.status(404).json({ error: "Invalid credentials" });
     }
 
     // Compare provided password with stored hashed password
     const isMatch = await bcrypt.compare(password.trim(), user.password);
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     // Ensure user has verified their email before allowing login
     if (!user.isEmailVerified) {
-      return res.status(403).json({ error: 'Please verify your email before logging in' });
+      return res
+        .status(403)
+        .json({ error: "Please verify your email before logging in" });
     }
 
     // Generate JWT token for authenticated session
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h'
+      expiresIn: "1h",
     });
 
     // Respond with token and success message
     res.status(200).json({
-      message: 'Login successful',
-      token
+      message: "Login successful",
+      token,
     });
-
   } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ error: 'Server error. Please try again later.' });
+    console.error("Login error:", err);
+    res.status(500).json({ error: "Server error. Please try again later." });
   }
 };
 
@@ -120,7 +128,7 @@ export const verifyOTPController = async (req, res) => {
 
     // Validate input (optional but good practice)
     if (!email || !otp) {
-      return res.status(400).json({ error: 'Email and OTP are required.' });
+      return res.status(400).json({ error: "Email and OTP are required." });
     }
 
     // Verify OTP
@@ -132,27 +140,26 @@ export const verifyOTPController = async (req, res) => {
     // Fetch user
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: 'User not found.' });
+      return res.status(404).json({ error: "User not found." });
     }
 
     // Mark email as verified
     user.isEmailVerified = true;
     await user.save();
 
-    // I don't think we need to issue a token here since user already has one from login 
+    // I don't think we need to issue a token here since user already has one from login
 
     // // Issue JWT token
-    // const token = jwt.sign( 
+    // const token = jwt.sign(
     //   { id: user._id },
     //   process.env.JWT_SECRET,
     //   { expiresIn: '1h' }
     // );
 
     res.status(200).json({ message: result.message });
-
   } catch (err) {
-    console.error('OTP verification error:', err);
-    res.status(500).json({ error: 'Something went wrong. Please try again.' });
+    console.error("OTP verification error:", err);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 };
 
@@ -167,36 +174,38 @@ export const googleAuthCallback = async (req, res) => {
 
     // Generate JWT token with user ID as payload
     const token = jwt.sign(
-      { id: user._id},
+      { id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: '7d'} // Token valid for 7 days
-    )
+      { expiresIn: "7d" } // Token valid for 7 days
+    );
 
     // Respond with token and basic user info
     res.status(200).json({
-      message: 'Google login successful',
+      message: "Google login successful",
       token,
       user: {
         id: user._id,
         email: user.email,
         name: user.name,
-        photo: user.photo
-      }
+        photo: user.photo,
+      },
     });
   } catch (err) {
     //Handle unexpected errors
-    res.status(500).json({ message: 'Google login failed', error: err.message})
+    res
+      .status(500)
+      .json({ message: "Google login failed", error: err.message });
   }
-}
+};
 /**
  * @desc  Controller to handle user password reset using token
  */
 export const forgotPassword = async (req, res) => {
   try {
-    const result = await initiatePasswordReset(req.body.email)
+    const result = await initiatePasswordReset(req.body.email);
     res.status(200).json(result);
   } catch (err) {
-    res.status(400).json({ message: err.message});
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -214,11 +223,11 @@ export const resetPassword = async (req, res) => {
     // Find user with valid token
     const user = await User.findOne({
       passwordResetToken: token,
-      passwordResetExpires: { $gt: Date.now() }
+      passwordResetExpires: { $gt: Date.now() },
     });
 
     if (!user) {
-      return res.status(400).json({ error: 'Token invalid or expired' });
+      return res.status(400).json({ error: "Token invalid or expired" });
     }
 
     // Update password
@@ -227,10 +236,9 @@ export const resetPassword = async (req, res) => {
     user.passwordResetExpires = undefined;
     await user.save();
 
-    res.status(200).json({ message: 'Password has been reset successfully' });
-
+    res.status(200).json({ message: "Password has been reset successfully" });
   } catch (err) {
-    console.error('Reset password error:', err);
-    res.status(500).json({ error: 'Something went wrong. Please try again.' });
+    console.error("Reset password error:", err);
+    res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 };
