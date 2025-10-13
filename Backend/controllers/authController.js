@@ -6,7 +6,7 @@ import Subscription from "../models/subscription.js";
 import { createOTP, storeOTP, verifyOTP } from "../utils/otpUtils.js";
 import { initiatePasswordReset } from "../utils/passwordReset.js";
 import { sendOTPEmail } from "../utils/mailer.js";
-
+import axios from "axios";
 dotenv.config();
 
 /**
@@ -22,10 +22,12 @@ export const signupController = async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ error: "User with this email already exists" });
+      return res
+        .status(409)
+        .json({ error: " User with this email already exists" });
     }
 
-    // Create new user
+    // Create new user(password hashing handled in User model pre-save hook)
     const newUser = await User.create({
       firstName,
       lastName,
@@ -34,7 +36,7 @@ export const signupController = async (req, res) => {
       profileCompleted: false,
     });
 
-    // Auto-assign Basic subscription
+    // Auto-assign Basic subscription to new users
     const basicSubscription = await Subscription.create({
       user: newUser.id,
       plan: "basic",
@@ -48,28 +50,24 @@ export const signupController = async (req, res) => {
     newUser.subscription = basicSubscription._id;
     await newUser.save();
 
-    // Generate and send OTP
-    try {
-      const otp = createOTP();
-      storeOTP(email, otp);
-      await sendOTPEmail(email, otp);
-    } catch (otpError) {
-      console.error("OTP logic failed:", otpError);
-      // Optional: still allow user to verify later
-    }
+    // Generate and send OTP for email verification
+    const otp = createOTP();
+    storeOTP(email, otp);
+    await axios.post(`${process.env.VERCEL_MAILER}/api/send-email`, {
+      type: "otp",
+      email,
+      otp,
+    });
 
     return res.status(201).json({
       message: "User created successfully. OTP sent for verification.",
     });
-
   } catch (error) {
-    console.error("Signup failed:", error);
-    return res.status(500).json({
-      error: "An unexpected error occurred, please try again later.",
-    });
+    return res
+      .status(500)
+      .json({ error: "An unexpected error occurred, please try again later." });
   }
 };
-
 
 /**
  * @desc Handles user login
