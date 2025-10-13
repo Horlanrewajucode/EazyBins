@@ -5,17 +5,14 @@ import userRoutes from "./routes/userRoutes.js";
 import paystackRoutes from "./routes/paystackRoutes.js";
 import pickupRoutes from "./routes/pickupRoutes.js";
 import collectorRoutes from "./routes/collectorRoutes.js";
-import webhookRoutes from "./routes/webhookRoutes.js";
+
 // import "./cron/subscriptionCron.js"; // Uncomment to enable cron job
 import dotenv from "dotenv";
 const app = express();
 dotenv.config();
-app.set('trust proxy', 1)
 
 // Middleware and routes
-const allowedOrigin = [process.env.FRONTEND_URL,
-  'http://localhost:5173', //fallback fror local dev
-];
+const allowedOrigin = [process.env.FRONTEND_URL];
 
 app.use(
   cors({
@@ -40,5 +37,5 @@ app.use("/api/user", userRoutes); // userRoutes
 app.use("/api/paystack", paystackRoutes); // paystackRoutes
 app.use("/api/pickups", pickupRoutes); // pickupRoutes
 app.use("/api/collectors", collectorRoutes); // collectorRoutes
-app.use("/api/webhooks", webhookRoutes); // webhookRoutes
+
 export default app;
