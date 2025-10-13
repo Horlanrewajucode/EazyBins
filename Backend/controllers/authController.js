@@ -50,17 +50,21 @@ export const signupController = async (req, res) => {
     newUser.subscription = basicSubscription._id;
     await newUser.save();
 
-   // Generate and send OTP for email verification
-// ✅ This is the only email flow wired to noreplyeazybins@gmail.com and testable in the demo
-const otp = createOTP();
-storeOTP(email, otp);
-await sendOTPEmail(email, otp);
-
-    return res
-      .status(201)
-      .json({
-        message: "User created successfully. OTP sent for verification.",
-      });
+    // Generate and send OTP for email verification
+    // ✅ This is the only email flow wired to noreplyeazybins@gmail.com and testable in the demo
+    const otp = createOTP();
+    storeOTP(email, otp);
+    try {
+      await sendOTPEmail(email, otp);
+    } catch (err) {
+      console.error("Email error:", err);
+      return res.status(500).json({ error: "Failed to send OTP email" });
+    }
+    console.log("Sending response to client...");
+    console.log("Response sent.");
+    return res.status(201).json({
+      message: "User created successfully. OTP sent for verification.",
+    });
   } catch (error) {
     return res
       .status(500)
