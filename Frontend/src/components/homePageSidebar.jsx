@@ -1,12 +1,18 @@
 import React from "react";
 import Logo from "./logo";
+import { Link } from "react-router-dom";
 
-const HomePageSidebar = ({toggleSideBar}) => {
+const HomePageSidebar = ({ toggleSideBar }) => {
   return (
     <div className="h-[100%] flex flex-col justify-between pb-8 pl-1  ">
       <nav className="flex flex-col gap-5">
         <div className="w-full flex flex-row items-center ">
-          <img onClick={toggleSideBar} className="mr-5 cursor-pointer" src="/hambuger.png" alt="" />
+          <img
+            onClick={toggleSideBar}
+            className="mr-5 cursor-pointer"
+            src="/hambuger.png"
+            alt=""
+          />
           <Logo />
         </div>
 
@@ -39,11 +45,13 @@ const HomePageSidebar = ({toggleSideBar}) => {
           <img src="/history.png" alt="History icon" />
           <p className="pl-3">History</p>
         </div>
-
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link
+          className="w-full ml-1 flex flex-row items-center cursor-pointer"
+          to={"/account-settings"}
+        >
           <img src="/profile.png" alt="Profile icon" />
           <p className="pl-3"> Profile</p>
-        </div>
+        </Link>
 
         <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/settings.png" alt="Setting icon" />
@@ -66,9 +74,7 @@ const HomePageSidebar = ({toggleSideBar}) => {
       <div className="">
         <div className="flex flex-row w-full ml-1 items-center cursor-pointer">
           <img src="log-out.png" alt="Log out" />
-          <button className="ml-3   text-sm cursor-pointer ">
-            Log Out
-          </button>
+          <button className="ml-3   text-sm cursor-pointer ">Log Out</button>
         </div>
       </div>
     </div>
