@@ -6,6 +6,7 @@ import SignUpPage from "./pages/SignUpPage";
 import HomePage from "./pages/homePage";
 import ProtectedRoute from "./routes/protectedRoutes";
 import PublicRoute from "./routes/publicRoutes";
+import AccountSettings from "./pages/AccountSettings";
 
 function App() {
   // const Navigate = useNavigate();
@@ -24,10 +25,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/account-settings"
+          element={
+            <ProtectedRoute>
+              <AccountSettings />
+            </ProtectedRoute>
+          }
+        />
         {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
       </Routes>
     </BrowserRouter>
-
   );
 }
 
