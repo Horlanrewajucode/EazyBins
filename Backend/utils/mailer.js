@@ -37,34 +37,26 @@
 //   });
 // };
 
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Create a reusable transporter object using Gmail SMTP
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    // These credentials must match the noreplyeazybins@gmail.com account
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
- * Sends an OTP email to the specified user.
- * This is the only email flow we'll be able to test during the demo,
- * since it's wired to the noreplyeazybins@gmail.com account.
+ * Sends OTP email using Resend API
+ * ✅ This is the only email flow wired to noreplyeazybins@gmail.com and testable in the demo
  */
 export const sendOTPEmail = async (email, otp) => {
-  await transporter.sendMail({
-    from: `"EazyBins" <${process.env.EMAIL_USER}>`,
+  await resend.emails.send({
+    from: 'EazyBins <noreply@eazybins.com>', // or noreplyeazybins@gmail.com if domain not verified
     to: email,
     subject: 'Your OTP Code',
-    text: `Your OTP is ${otp}. It expires in 5 minutes.`,
+    html: `<p>Your OTP is <strong>${otp}</strong>. It expires in 5 minutes.</p>`,
   });
 };
+
 
 /**
  * Sends a password reset email.

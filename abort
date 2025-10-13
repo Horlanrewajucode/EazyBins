@@ -1,0 +1,261 @@
+[33mcommit 688e5f6f57082d4e67defcdaea176d6881ce140a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mniyi/backend/dev[m[33m)[m
+Merge: 4529b3b 9d42785
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Fri Oct 10 12:13:14 2025 +0100
+
+    Merge branch 'backend/dev' of https://github.com/Horlanrewajucode/EazyBins into niyi/backend/dev
+
+[33mcommit 4529b3bfdca8e70d7684e90945fa8aee3e589124[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Fri Oct 10 12:12:26 2025 +0100
+
+    Phase1:One-time pickup paystack integration and expiration logic
+
+[33mcommit 9d427859c0e10a7163092d761127dd2c19df9f3b[m[33m ([m[1;31morigin/backend/dev[m[33m)[m
+Merge: a97dba4 2ce08ac
+Author: Gordian okon <102440179+guardianprime@users.noreply.github.com>
+Date:   Tue Oct 7 05:18:10 2025 +0100
+
+    Merge pull request #38 from Horlanrewajucode/niyi/backend/dev
+    
+    Implemented: subscription system, pickup logic, Paystack integration and security patches
+
+[33mcommit 2ce08ac2bb4f449033b91f5a8145d38b90775342[m[33m ([m[1;31morigin/niyi/backend/dev[m[33m)[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Sun Oct 5 17:29:24 2025 +0100
+
+    � Final push: subscription system, pickup logic, Paystack integration, security patches
+
+[33mcommit a97dba4bd0d67d2f46422805397afa95ba63d9dd[m
+Merge: e8c4dc2 2542ce3
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Sun Sep 14 12:42:45 2025 +0100
+
+    Merge pull request #29 from Horlanrewajucode/niyi/backend/dev
+    
+    Backend improvements
+
+[33mcommit 2542ce3ac72ca4b0b5200cdfe35818526211cb6d[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Tue Sep 9 02:02:18 2025 +0100
+
+    Backend improvements
+    
+    - Refactored all auth controllers for better error handling
+    - Implemented update profile route with username logic
+    - Dropped conflicting MongoDB index and added partial index
+    - Fixed 500 error during signup due to duplicate null usernames
+
+[33mcommit 5f4cfb1a688048579a62e41fc42434f3e0a3cc7b[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Thu Aug 28 13:04:55 2025 +0100
+
+    Applied secure CORS config from test/dev
+
+[33mcommit e8c4dc25676504b480e154a3abd3a73dbb324f92[m[33m ([m[1;32mbackend/dev[m[33m)[m
+Merge: af90318 5f4cfb1
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Thu Aug 28 13:03:46 2025 +0100
+
+    Merge pull request #28 from Horlanrewajucode/niyi/backend/dev
+    
+    Applied secure CORS config from test/dev
+
+[33mcommit aafe275aec11e81abbeb3030eb6548c71722e715[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Mon Aug 25 16:04:36 2025 +0100
+
+    Added CORS origin verification for frontend development phase
+
+[33mcommit af903186bca2b7157975bd064fe20645eca47ca8[m
+Merge: 8c4bec9 aafe275
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Mon Aug 25 15:57:58 2025 +0100
+
+    Merge pull request #23 from Horlanrewajucode/niyi/backend/dev
+    
+    Added CORS origin verification for frontend development phase
+
+[33mcommit decdbf6ebcc990a42b778428b61fce012fe43cb9[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Sun Aug 24 09:37:12 2025 +0100
+
+    refactor: simplified signup flow and updated user schema with naming and profileCompleted flag
+
+[33mcommit 8c4bec9463be79931c5caeef8b0e09fe5f8494f9[m
+Merge: 7c01b60 decdbf6
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Sun Aug 24 09:31:03 2025 +0100
+
+    Merge pull request #20 from Horlanrewajucode/niyi/backend/dev
+    
+    refactor: simplified signup flow and updated user schema with naming structure profileCompleted flag
+
+[33mcommit ed8ba39c9cbaac32e0f8e43bbcf40d5a0ad8dcb4[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Thu Aug 21 16:33:13 2025 +0100
+
+    docs: updated README with forgot and reset password logic + bug fix
+
+[33mcommit 7c01b60e8dbeee0ee5f772519fbe174ee9f8be5c[m
+Merge: add6782 ed8ba39
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Thu Aug 21 16:30:25 2025 +0100
+
+    Merge pull request #14 from Horlanrewajucode/niyi/backend/dev
+    
+    docs: updated README with forgot and reset password logic + bug fix
+
+[33mcommit add67827928522a517eeea3eefc386834c73b35e[m
+Merge: 013f4ba e6b15e5
+Author: Gordian okon <102440179+guardianprime@users.noreply.github.com>
+Date:   Thu Aug 21 13:04:41 2025 +0100
+
+    Merge pull request #13 from Horlanrewajucode/niyi/backend/dev
+    
+    Added forgot password and reset password logic + controllers for Google OAuth
+
+[33mcommit e6b15e549e8227af938fc3d4277e323b34f2eb02[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Wed Aug 20 17:08:24 2025 +0100
+
+    Added forgot password and reset password logic
+
+[33mcommit 013f4ba2af4fba04aa7c2ee43625fc1968b78616[m
+Merge: ed0d7b6 448922c
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Sat Aug 16 13:41:11 2025 +0100
+
+    Merge pull request #10 from Horlanrewajucode/niyi/backend/dev
+    
+    Updated Readme with Hosted URL
+
+[33mcommit 448922c3590a7046136fb8194a520c23e62251e8[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Sat Aug 16 13:32:21 2025 +0100
+
+    Updated Readme with Backend URL
+
+[33mcommit 3fbe827de8fd9fbf3834d1e5e33e675736916671[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Thu Aug 14 00:20:46 2025 +0100
+
+    Updated Readme with backend features details
+
+[33mcommit ed0d7b68cb72e610f1d0e0ec72c9eb59feb23cf0[m
+Merge: b65b978 14a7f7f
+Author: Gordian okon <102440179+guardianprime@users.noreply.github.com>
+Date:   Wed Aug 13 19:14:19 2025 +0100
+
+    Merge pull request #6 from Horlanrewajucode/niyi/backend/dev
+    
+    Implement auth flow with OTP and JWT
+
+[33mcommit 14a7f7fe524ce9eef12146063a032cd8b7ba55ec[m
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Wed Aug 13 01:06:40 2025 +0100
+
+    Implement auth flow with OTP and JWT
+
+[33mcommit b65b978d74fb4a39834cc3827fee58321a131879[m
+Merge: 5bcb2e6 3d3335c
+Author: 911Dev-Niyi <anjorinadeniyi811@gmail.com>
+Date:   Mon Aug 11 11:53:53 2025 +0100
+
+    Merge pull request #5 from Horlanrewajucode/guardian/dev
+    
+    backend feature: created the user model and added functions and middlewares.
+
+[33mcommit 3d3335cd0c69b2b7caa6442c43642ebba40ea42d[m
+Author: guardianprime <okongordian@gmail.com>
+Date:   Mon Aug 11 10:15:04 2025 +0100
+
+    feat: created the user model and added functions and middlewares that can be integrated with jwt.
+
+[33mcommit 5bcb2e6ad3ce441298e51ac40a84b042639016e5[m
+Merge: 0059eb9 2122452
+Author: Busari Olanrewaju <128599951+Horlanrewajucode@users.noreply.github.com>
+Date:   Sat Aug 9 20:08:26 2025 +0100
+
+    Merge pull request #3 from Horlanrewajucode/guardian/dev
+    
+    backend: backend foundational setup
+
+[33mcommit 2122452d98671843b27b379d858a7b4143b50260[m[33m ([m[1;31morigin/guardian/dev[m[33m)[m
+Author: guardianprime <okongordian@gmail.com>
+Date:   Sat Aug 9 02:28:08 2025 +0100
+
+    backend: backend foundational setup
+
+[33mcommit 0059eb95cf2c818f3bf7b2b21bd8ca5b7f46c98d[m
+Merge: 816c6d3 4b7c5d1
+Author: Busari Olanrewaju <128599951+Horlanrewajucode@users.noreply.github.com>
+Date:   Tue Jul 15 18:20:15 2025 +0100
+
+    Merge pull request #2 from Horlanrewajucode/frontend/dev
+    
+    initialised project for frontend developers
+
+[33mcommit 4b7c5d1772db9986497a364af0c7e8584f3453bf[m[33m ([m[1;31morigin/frontend/dev[m[33m)[m
+Author: Horlanrewajucode <buzareeolanrewaju01@gmail.com>
+Date:   Tue Jul 15 18:11:47 2025 +0100
+
+    initialised project for frontend developers
+
+[33mcommit 816c6d3ca2281829eb91a38dd24157413714ee3c[m
+Merge: 3d7a262 cc39b8a
+Author: Busari Olanrewaju <128599951+Horlanrewajucode@users.noreply.github.com>
+Date:   Tue Jul 15 17:56:39 2025 +0100
+
+    Merge pull request #1 from Horlanrewajucode/dev
+    
+    updated readme
+
+[33mcommit cc39b8a320dff36b97daeeedff5915b3864ca219[m[33m ([m[1;31morigin/dev[m[33m)[m
+Author: Horlanrewajucode <buzareeolanrewaju01@gmail.com>
+Date:   Tue Jul 15 17:48:36 2025 +0100
+
+    updated readme
+
+[33mcommit 3d7a262764b710077c1249447a83100655fb321a[m
+Merge: 73db7bf a391d43
+Author: Horlanrewajucode <buzareeolanrewaju01@gmail.com>
+Date:   Tue Jul 15 17:38:39 2025 +0100
+
+    initialised project
+
+[33mcommit a391d43cd9af3d16fc000c3d58f2649521eeb605[m
+Author: Horlanrewajucode <buzareeolanrewaju01@gmail.com>
+Date:   Tue Jul 15 17:23:06 2025 +0100
+
+    initialised project
+
+[33mcommit 73db7bfa543b1ad3aecae32abe92b79e29dbebc7[m
+Author: Busari Olanrewaju <128599951+Horlanrewajucode@users.noreply.github.com>
+Date:   Tue Jul 15 17:10:46 2025 +0100
+
+    Delete README.md
+
+[33mcommit 4524709922ef51e2f84c15fd8afaf147ddab8e4f[m
+Author: Busari Olanrewaju <128599951+Horlanrewajucode@users.noreply.github.com>
+Date:   Tue Jul 15 17:09:41 2025 +0100
+
+    Delete .gitignore
+
+[33mcommit c69a59d93c6bb7ca4e6a386905d39fccfa41997d[m
+Author: guardianprime <okongordian@gmail.com>
+Date:   Tue Jul 15 09:45:23 2025 +0100
+
+    chore reversed changes made to folder structure
+
+[33mcommit 6d44476e04f229436722054535565141f1bd7d28[m
+Author: guardianprime <okongordian@gmail.com>
+Date:   Tue Jul 15 09:14:27 2025 +0100
+
+    chore: backend folder structure
+
+[33mcommit 354da8da9bf096906458cf83d4fe0e016e5297e0[m
+Author: guardianprime <okongordian@gmail.com>
+Date:   Tue Jul 15 09:07:15 2025 +0100
+
+    intial commit
