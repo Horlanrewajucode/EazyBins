@@ -6,7 +6,7 @@ import Subscription from "../models/subscription.js";
 import { createOTP, storeOTP, verifyOTP } from "../utils/otpUtils.js";
 import { initiatePasswordReset } from "../utils/passwordReset.js";
 import { sendOTPEmail } from "../utils/mailer.js";
-import axios from "axios";
+
 dotenv.config();
 
 /**
@@ -50,18 +50,17 @@ export const signupController = async (req, res) => {
     newUser.subscription = basicSubscription._id;
     await newUser.save();
 
-    // Generate and send OTP for email verification
-    const otp = createOTP();
-    storeOTP(email, otp);
-    await axios.post(`${process.env.VERCEL_MAILER}/api/send-email`, {
-      type: "otp",
-      email,
-      otp,
-    });
+   // Generate and send OTP for email verification
+// ✅ This is the only email flow wired to noreplyeazybins@gmail.com and testable in the demo
+const otp = createOTP();
+storeOTP(email, otp);
+await sendOTPEmail(email, otp);
 
-    return res.status(201).json({
-      message: "User created successfully. OTP sent for verification.",
-    });
+    return res
+      .status(201)
+      .json({
+        message: "User created successfully. OTP sent for verification.",
+      });
   } catch (error) {
     return res
       .status(500)
@@ -201,6 +200,8 @@ export const googleAuthCallback = async (req, res) => {
 };
 /**
  * @desc  Controller to handle user password reset using token
+ * ⚠️ This flow is not testable in the demo because it requires a separate sender email
+ * (e.g. support@eazybins.com) due to Gmail restrictions on password reset content.
  */
 export const forgotPassword = async (req, res) => {
   try {
@@ -211,6 +212,10 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
+/**
+ * @desc  Controller to handle password reset confirmation
+ * ⚠️ This flow is not testable in the demo due to sender limitations.
+ */
 export const resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
