@@ -13,7 +13,9 @@ dotenv.config();
 app.set('trust proxy', 1)
 
 // Middleware and routes
-const allowedOrigin = [process.env.FRONTEND_URL];
+const allowedOrigin = [process.env.FRONTEND_URL,
+  'http://localhost:5173', //fallback fror local dev
+];
 
 app.use(
   cors({
