@@ -49,13 +49,16 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  * ✅ This is the only email flow wired to noreplyeazybins@gmail.com and testable in the demo
  */
 export const sendOTPEmail = async (email, otp) => {
-  await resend.emails.send({
-    from: 'EazyBins <noreply@eazybins.com>', // or noreplyeazybins@gmail.com if domain not verified
+  console.log(`📨 Sending OTP to ${email} via Resend...`);
+  const response = await resend.emails.send({
+    from: 'EazyBins <onboarding@resend.dev>', // Sandbox sender
     to: email,
     subject: 'Your OTP Code',
     html: `<p>Your OTP is <strong>${otp}</strong>. It expires in 5 minutes.</p>`,
   });
+  console.log("📬 Resend response:", response);
 };
+
 
 
 /**
