@@ -35,7 +35,7 @@ const PickupSchema = new mongoose.Schema({
   pickupRegion: {
     city: { type: String},
     state: { type: String},
-    countryr: { type: String},
+    country: { type: String},
   },
 
   scheduledDate: { type: Date }, // For one-time pickups
@@ -56,7 +56,7 @@ const PickupSchema = new mongoose.Schema({
   notes: { type: String },
   images: [{ type: String }], // URLs or file paths
 
-  rewardPoints: { type: Number, defualt: 0 },
+  rewardPoints: { type: Number, default: 0 },
   blockedAccess: { type: Boolean, default: false },
 
   visibility: {
