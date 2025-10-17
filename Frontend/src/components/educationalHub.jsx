@@ -1,6 +1,6 @@
 function EducationalHub() {
   return (
-    <section className="flex flex-col items-center gap-8 bg-white shadow-2xl shadow-stone-400 w-[21rem] px-10 py-6 rounded-2xl">
+    <section className="flex flex-col items-center gap-8 bg-white shadow-2xl shadow-stone-400 w-[25rem] px-10 py-6 rounded-2xl hover:scale-105 transition-transform duration-300">
       <h2 className="text-2xl md:text-3xl font-semibold">Educational Hub</h2>
       <img src="./educational-icon.svg" alt="Educational-hub-icon" />
       <div className="flex flex-col gap-2 text-[12px]">
