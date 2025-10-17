@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signup } from "../services/signupAuth";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "./loader";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -290,6 +290,7 @@ export default function SignupForm() {
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
+                    placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleChange}
                     className={`block w-full rounded-md border px-4 py-2 pr-10 text-gray-900 sm:text-sm 
