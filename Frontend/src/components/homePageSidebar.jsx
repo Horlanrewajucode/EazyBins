@@ -1,64 +1,64 @@
 import React from "react";
 import Logo from "./logo";
+import { Link } from "react-router-dom";
 
 const HomePageSidebar = ({toggleSideBar}) => {
   return (
     <div className="h-[100%] flex flex-col justify-between pb-8 pl-1  ">
       <nav className="flex flex-col gap-5">
-        <div className="w-full flex flex-row items-center ">
-          <img onClick={toggleSideBar} className="mr-5 cursor-pointer" src="/hambuger.png" alt="" />
+        <div className="w-full flex flex-row items-center ">           <img onClick={toggleSideBar} className=" pl-2 cursor-pointer" src="/hambuger.png" alt=""  />
           <Logo />
         </div>
 
-        <div className="w-full ml-2 flex flex-row items-center cursor-pointer">
+        <Link to='/'  className="w-full ml-2 flex flex-row items-center cursor-pointer">
           <img src="/home.png" alt="Home image" />
           <p className="pl-4">Home</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link to='/schedulePage' className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/schedule.png" alt="Schedule" />
           <p className="pl-3">Schedule</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-2 flex flex-row items-center cursor-pointer">
+        <Link to='/chatPage' className="w-full ml-2 flex flex-row items-center cursor-pointer">
           <img src="/chat.png" alt="Chat image" />
           <p className="pl-3">Chat</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link to='/walletPage' className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/wallet.png" alt="Wallet image" />
           <p className="pl-3"> Wallet</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointerw-f">
+        <Link to='/educationalHubPage' className="w-full ml-1 flex flex-row items-center cursor-pointerw-f">
           <img src="/graduation-cap.png" alt="Graduation-cap icon" />
           <p className="pl-3">Educational Hub</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link to='/historyPage' className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/history.png" alt="History icon" />
           <p className="pl-3">History</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link to='/profilePage' className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/profile.png" alt="Profile icon" />
           <p className="pl-3"> Profile</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link to='/settings' className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/settings.png" alt="Setting icon" />
           <p className="pl-3">settings</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link to='/about-us' className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/about-us.png" alt="Abouts-us icon" />
           <p className="pl-3">About us</p>
-        </div>
+        </Link>
 
-        <div className="w-full ml-1 flex flex-row items-center cursor-pointer">
+        <Link to='/contact-us' className="w-full ml-1 flex flex-row items-center cursor-pointer">
           <img src="/phone.png" alt="Contact-us icon" />
           <p className="pl-3">Contact us</p>
-        </div>
+        </Link>
       </nav>
 
       {/* Log Out */}

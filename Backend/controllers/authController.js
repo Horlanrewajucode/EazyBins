@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import User from "../models/user.js";
+import Subscription from "../models/subscription.js";
 import { createOTP, storeOTP, verifyOTP } from "../utils/otpUtils.js";
 import { initiatePasswordReset } from "../utils/passwordReset.js";
 import { sendOTPEmail } from "../utils/mailer.js";
@@ -34,6 +35,20 @@ export const signupController = async (req, res) => {
       profileCompleted: false
     });
 
+    // Auto-assign Basic subscription to new users
+    const basicSubscription =  await Subscription.create({ 
+      user: newUser.id,
+      plan: "basic",
+      pickupQuota: 3,
+      pickupUsed: 0,
+      startDate: new Date(),
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      active: true
+    });
+
+    newUser.subscription = basicSubscription._id;
+    await newUser.save();
+
     // Generate and send OTP for email verification
     const otp = createOTP();
     storeOTP(email, otp);
@@ -53,9 +68,9 @@ export const signupController = async (req, res) => {
  * - Issues JWT token upon successful authentication
  */
 export const loginController = async (req, res) => {
-  const { identifier, password } = req.body; // identifier can be either email or username
-
   try {
+    const { identifier, password } = req.body; // identifier can be either email or username
+
     // Attempt to find user by email or username
     const user = await User.findOne({
       $or: [{ email: identifier }, { username: identifier }]
@@ -63,7 +78,7 @@ export const loginController = async (req, res) => {
 
     // If no user is found, return 404
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Invalid credentials' });
     }
 
     // Compare provided password with stored hashed password
@@ -124,14 +139,16 @@ export const verifyOTPController = async (req, res) => {
     user.isEmailVerified = true;
     await user.save();
 
-    // Issue JWT token
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    // I don't think we need to issue a token here since user already has one from login 
 
-    res.status(200).json({ message: result.message, token });
+    // // Issue JWT token
+    // const token = jwt.sign( 
+    //   { id: user._id },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: '1h' }
+    // );
+
+    res.status(200).json({ message: result.message });
 
   } catch (err) {
     console.error('OTP verification error:', err);

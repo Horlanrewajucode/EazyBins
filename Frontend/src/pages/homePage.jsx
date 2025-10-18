@@ -20,7 +20,7 @@ const HomePage = () => {
     // setOpenSidebar((prev) => !prev);
 
   return (
-    <div className="w-full h-[100%] lg:flex lg:flex-row md:items">
+    <div className="w-full min-h-screen md:flex md:flex-row justify-center">
       {/* SideBar */}
 
       {openSideBar ?
@@ -28,6 +28,8 @@ const HomePage = () => {
     <div className="w-[18%] hidden md:hidden lg:block bg-[#EEEFEC] ">
         <HomePageSidebar
           toggleSideBar = {toggleSideBar}
+
+         
         
         />
       </div>
@@ -37,6 +39,7 @@ const HomePage = () => {
         <HomePageNavBar
          
           toggleSideBar = {toggleSideBar}
+           openSideBar = {openSideBar}
           
           
           

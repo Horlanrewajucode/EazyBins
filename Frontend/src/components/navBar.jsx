@@ -70,9 +70,9 @@ function NavBar() {
             Profile
           </a>
 
-          <button className="bg-green-600 text-white py-2 px-5 rounded-2xl md:flex cursor-pointer hover:font-bold hover:bg-green-800 duration-500">
+          <Link to='/signup' className="bg-green-600 text-white py-2 px-5 rounded-2xl md:flex cursor-pointer hover:font-bold hover:bg-green-800 duration-500">
             Sign in
-          </button>
+          </Link>
         </nav>
       ) : (
         <nav className="overflow-y-hidden fixed z-10 top-0 left-[-150%] w-screen min-h-screen flex flex-col justify-center items-center gap-10 duration-300 ease-in"></nav>
