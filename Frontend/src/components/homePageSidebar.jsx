@@ -1,13 +1,20 @@
 import React from "react";
 import Logo from "./logo";
 
-const HomePageSidebar = ({toggleSideBar}) => {
+const HomePageSidebar = ({ toggleSideBar }) => {
   return (
     <div className="h-[100%] flex flex-col justify-between pb-8 pl-1  ">
       <nav className="flex flex-col gap-5">
-        <div className="w-full flex flex-row items-center ">
-          <img onClick={toggleSideBar} className="mr-5 cursor-pointer" src="/hambuger.png" alt="" />
-          <Logo />
+        <div className="w-full flex flex-row items-center mt-3 ">
+          <img
+            onClick={toggleSideBar}
+            className="mr-5 cursor-pointer"
+            src="/hambuger.png"
+            alt=""
+          />
+          <div className="w-[50%] ml-8">
+            <Logo />
+          </div>
         </div>
 
         <div className="w-full ml-2 flex flex-row items-center cursor-pointer">
@@ -63,12 +70,10 @@ const HomePageSidebar = ({toggleSideBar}) => {
 
       {/* Log Out */}
 
-      <div className="">
-        <div className="flex flex-row w-full ml-1 items-center cursor-pointer">
+      <div className="mb-10">
+        <div className=" flex flex-row w-full ml-1 items-center cursor-pointer">
           <img src="log-out.png" alt="Log out" />
-          <button className="ml-3   text-sm cursor-pointer ">
-            Log Out
-          </button>
+          <button className="ml-3   text-sm cursor-pointer ">Log Out</button>
         </div>
       </div>
     </div>
