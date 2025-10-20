@@ -6,28 +6,31 @@ import SignUpPage from "./pages/SignUpPage";
 import HomePage from "./pages/homePage";
 import ProtectedRoute from "./routes/protectedRoutes";
 import PublicRoute from "./routes/publicRoutes";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   // const Navigate = useNavigate();
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/otp-page" element={<OtpPage />} />
-        <Route
-          path="/homePage"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-      </Routes>
-    </BrowserRouter>
-
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/otp-page" element={<OtpPage />} />
+          <Route
+            path="/homePage"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+        </Routes>
+      </BrowserRouter>
+      <Toaster />
+    </>
   );
 }
 

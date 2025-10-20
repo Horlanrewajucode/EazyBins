@@ -20,3 +20,20 @@ export async function otp(code) {
     throw new Error(message);
   }
 }
+
+export async function resendOtp(email) {
+  try {
+    if (!email) {
+      throw new Error("No email provided for resending OTP");
+    }
+    // The endpoint path might be different, e.g., /api/auth/resend-verification
+    const response = await api.post("/api/auth/resend-otp", { email });
+    return response.data;
+  } catch (error) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to resend OTP. Please try again.";
+    throw new Error(message);
+  }
+}

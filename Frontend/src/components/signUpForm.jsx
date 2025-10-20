@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signup } from "../services/signupAuth";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "./loader";
+import toast from "react-hot-toast";
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,8 +30,8 @@ export default function SignupForm() {
     if (id === "firstName" || id === "lastName") {
       if (!value.trim()) {
         error = `${id === "firstName" ? "First" : "Last"} name is required`;
-      } else if (!/^[A-Za-z]+$/.test(value)) {
-        error = "Only letters are allowed";
+      } else if (!/^[A-Za-z-]+$/.test(value)) {
+        error = "Numbers and symbols are not allowed";
       } else {
         successMsg = "Looks good ✔";
       }
@@ -129,7 +130,7 @@ export default function SignupForm() {
   const mutation = useMutation({
     mutationFn: signup,
     onSuccess: (_, variables) => {
-      // alert('successful')
+      toast.success("Signup successful! Please check your email for OTP.");
       localStorage.setItem("signupEmail", variables.email);
       // after successful login/signup
       // localStorage.setItem("authToken", response.data.token);
@@ -137,8 +138,12 @@ export default function SignupForm() {
       navigate("/otp-page");
     },
     onError: (error) => {
-      // alert('error')
-      // alert(error.response?.data?.message || error.message);
+      // Determining the error message
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unexpected error occurred.";
+      toast.error(`Signup failed: ${errorMessage}`);
     },
     onSettled: () => {
       setIsLoading(false);
@@ -285,6 +290,7 @@ export default function SignupForm() {
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
+                    placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleChange}
                     className={`block w-full rounded-md border px-4 py-2 pr-10 text-gray-900 sm:text-sm 

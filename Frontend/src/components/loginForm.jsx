@@ -7,13 +7,14 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../services/loginAuth";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "./loader";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState({});
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateField = (id, value) => {
@@ -26,7 +27,7 @@ export default function LoginForm() {
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         error = "Please enter a valid email";
       } else {
-        successMsg = "Valid email ✔";
+        successMsg = "✔"; // Keep border green on valid email
       }
     }
 
@@ -42,7 +43,7 @@ export default function LoginForm() {
       } else if (!/[!@#$%^&*(),.?\":{}|<>]/.test(value)) {
         error = "Password must contain at least one symbol";
       } else {
-        successMsg = "Strong password ✔";
+        successMsg = "✔"; // Keep border green on valid password
       }
     }
 
@@ -61,7 +62,7 @@ export default function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let newErrors = {};
+    const newErrors = {};
     let newSuccess = {};
 
     Object.keys(formData).forEach((field) => {
@@ -79,39 +80,35 @@ export default function LoginForm() {
       return;
     }
 
-    // Success
-    console.log("Form submitted:", formData);
-    // alert("✅ Login successful!");
-
-    const payload = {
+    setIsLoading(true);
+    mutation.mutate({
       identifier: formData.email,
       password: formData.password,
-    };
-
-    console.log("Form submitted:", payload);
-
-    // Resetting all fields including errors and success messages
-    setFormData({
-      email: "",
-      password: "",
     });
-    setErrors({});
-    setSuccess({});
-setIsLoading(true)
-    mutation.mutate(payload);
   };
 
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data, variables) => {
-      // alert('successful')
+      toast.success("Login successful! Welcome back.");
       localStorage.setItem("token", data.token || "true");
-      localStorage.setItem("signupEmail", variables.identifier);
+      if (data.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
+      // Storing user info from response is better than from form variables
+      // For example: localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/homePage");
+      // Reset form only on success
+      setFormData({ email: "", password: "" });
+      setErrors({});
+      setSuccess({});
     },
     onError: (error) => {
-      // alert('error')
-      // alert(error.response?.data?.message || error.message);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unexpected error occurred.";
+      toast.error(`Login failed: ${errorMessage}`);
     },
     onSettled: () => {
       setIsLoading(false);
@@ -172,11 +169,6 @@ setIsLoading(true)
                     {errors.email}
                   </p>
                 )}
-                {success.email && (
-                  <p className="mt-1 text-xs text-green-600 text-left">
-                    {success.email}
-                  </p>
-                )}
               </div>
 
               {/* Password with toggle */}
@@ -191,6 +183,7 @@ setIsLoading(true)
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
+                    placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleChange}
                     className={`block w-full rounded-md border px-4 py-2 pr-10 outline-stone-400 text-gray-900 sm:text-sm 
@@ -218,11 +211,6 @@ setIsLoading(true)
                 {errors.password && (
                   <p className="mt-1 text-xs text-red-500 text-left">
                     {errors.password}
-                  </p>
-                )}
-                {success.password && (
-                  <p className="mt-1 text-xs text-green-600 text-left">
-                    {success.password}
                   </p>
                 )}
               </div>
