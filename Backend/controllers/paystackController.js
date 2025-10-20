@@ -7,6 +7,11 @@ import Pickup from "../models/pickup.js";
 export const initiatePickupPayment = async (req, res) => {
   try {
     const { email, amount, pickupId } = req.body;
+    
+    const pickup = await Pickup.findById(pickupId);
+    if(!pickup || pickup.user.toString()!== req.user.id) {
+      return res.status(403).json({ error: "Unauthorized pickup payment attempt"})
+    }
 
     const tx_ref = `pickup-${pickupId}-${Date.now()}`;
 
@@ -21,7 +26,7 @@ export const initiatePickupPayment = async (req, res) => {
     res.status(200).json({ authorization_url: result.data.authorization_url });
   } catch (error) {
     console.error("Payment initiation error:", error.message);
-    res.status(500).json({ message: "Failed to initiate payment" });
+    res.status(500).json({ message: "Payment processing failed. Please try again" });
   }
 };
 
@@ -49,9 +54,6 @@ export const verifyPickupPayment = async (req, res) => {
     res.status(400).json({ message: "Payment unsuccessful" });
   } catch (error) {
     console.error('Verification failed:', error.message);
-    res.status(500).json({
-        message: 'Failed to verify payment',
-        details: error.response?.data  || error.message
-    })
+    res.status(500).json({message: "Payment processing failed. Please try again"})
   }
 };

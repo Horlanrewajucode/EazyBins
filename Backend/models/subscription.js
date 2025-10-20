@@ -49,3 +49,8 @@ const SubscriptionSchema = new mongoose.Schema({
 });
 
 export default mongoose.model("Subscription", SubscriptionSchema);
+
+// Virtuals
+SubscriptionSchema.virtual('isPaid').get(function () {
+  return !!(this.paymentReference && this.paidAt);
+});

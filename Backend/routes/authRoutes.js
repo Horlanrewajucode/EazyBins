@@ -8,14 +8,14 @@ import {
     resetPassword,
 } from '../controllers/authController.js';
 import { validateSignup, validateLogin, sanitizeSignupInput, sanitizeLoginInput } from '../middlewares/validateAuth.js';
-import { limiter } from '../middlewares/limiter.js';
+import { limiter, loginLimiter, otpLimiter, resetLimiter } from '../middlewares/limiter.js';
 import passport from 'passport';
 
 const router = express.Router();
 
 router.post('/signup', limiter, sanitizeSignupInput ,validateSignup, signupController);
-router.post('/login', limiter, sanitizeLoginInput, validateLogin, loginController);
-router.post('/verify-otp', limiter, verifyOTPController);
+router.post('/login', loginLimiter, sanitizeLoginInput, validateLogin, loginController);
+router.post('/verify-otp', resetLimiter, verifyOTPController);
 
 // //To be uncommented, when OAuth is implemented
 // //Google OAuth routes
@@ -24,6 +24,6 @@ router.post('/verify-otp', limiter, verifyOTPController);
 
 // Password reset routes
 router.post('/forgot-password', forgotPassword);
-router.post('/reset-password/:token',limiter, resetPassword);
+router.post('/reset-password/:token', resetLimiter, resetPassword);
 
 export default router;

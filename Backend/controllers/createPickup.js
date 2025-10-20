@@ -98,8 +98,7 @@ export const createPickup =  async (req, res) => {
   } catch (error) {
     console.error("Pickup creation failed:", error.message);
     res.status(500).json({
-      message: "Server error, please try again later",
-      error: error.message
+      message: "Server error, please try again later"
     });
   }
 };
